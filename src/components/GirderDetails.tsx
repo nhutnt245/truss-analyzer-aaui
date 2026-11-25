@@ -1,20 +1,9 @@
 import { GirderGroup, CarriedTruss, TreData } from '../types';
-import { 
-  ArrowDown, 
-  Settings, 
-  CheckCircle, 
-  Cpu, 
-  Grid, 
-  Server, 
-  TrendingUp, 
-  Activity, 
-  Hash, 
-  AlertCircle,
-  ArrowLeft,
-  Search
-} from 'lucide-react';
 import React, { useState } from 'react';
-import { cn } from '../lib/utils';
+import { AUI, ATTR } from '../aui';
+import { AuiIcon } from './AuiIcon';
+import { AuiTable } from './AuiTable';
+import { AuiPane } from './AuiPane';
 import { SSTWorkspace } from './SSTWorkspace';
 import type { ParsedInventory } from '../lib/inventory';
 import type { SSTHangerResult } from '../lib/sst-types';
@@ -32,9 +21,9 @@ export function GirderDetails({ group, inventory, onInventoryChange, onHangersLo
 
     if (!group) {
         return (
-            <div className="flex-1 flex items-center justify-center p-8 text-[#141414] opacity-50 bg-[#DEDCD7]">
-                <p className="text-[10px] uppercase font-bold tracking-widest">Select a girder truss from the list to view data.</p>
-            </div>
+            <AuiPane name="analyzer" title="Analyzer">
+                <span className={AUI.text} {...ATTR}>Select a girder truss from the list to view data.</span>
+            </AuiPane>
         );
     }
 
@@ -75,164 +64,106 @@ export function GirderDetails({ group, inventory, onInventoryChange, onHangersLo
     const deflection = `L/360 (${(span / 360).toFixed(2)}")`;
     const csi = group.girder.treData?.csi !== undefined ? group.girder.treData.csi : 0.76;
 
+    const dolText = group.girder.treData?.dol !== undefined && group.girder.treData.dol !== null ? group.girder.treData.dol.toFixed(2) : "N/A";
+    const bottomMembers = group.girder.treData?.members?.filter(m => m.type === 'BottomChord') ?? [];
+    const hasBottomMembers = bottomMembers.length > 0;
+    const bearingText = selectedCarried?.bearingSide ? `${selectedCarried.bearingSide.toUpperCase()} END` : "LEFT END";
+
+    /** one label / value line */
+    const line = (label: string, value: React.ReactNode, key?: React.Key) => (
+        <div key={key} className={AUI.rowBetween}>
+            <span className={AUI.text} {...ATTR}>{label}</span>
+            <span className={AUI.text} {...ATTR}>{value}</span>
+        </div>
+    );
+    const exceptions = (list: typeof tcExceptions) => list.map((ex, i) => line(`*Except* ${ex.name}:`, `${ex.size} ${ex.grade} ${ex.species}`, i));
+
+    const sstView = sstMode && selectedCarried;
+
     return (
-        <div className="flex-1 flex overflow-hidden bg-[#1E1F29]">
-            {/* Middle Column: Carried Trusses List */}
-            <section className="w-[480px] border-r border-[#141414] flex flex-col bg-[#EDEDED] shrink-0">
-                <div className="p-3 border-b border-[#141414] flex justify-between items-center bg-[#D4D3D0] shrink-0">
-                    <h2 className="text-[10px] uppercase font-bold tracking-widest text-[#141414]">Carried by {group.girder.label}</h2>
-                    <span className="text-[10px] font-mono text-[#141414] font-bold">[{String(carried.length).padStart(2, '0')} Items]</span>
-                </div>
-                <div className="flex-1 overflow-y-auto">
-                    <table className="w-full text-left text-[11px] font-mono leading-tight">
-                        <thead className="sticky top-0 bg-[#EDEDED] z-10">
-                            <tr className="border-b border-[#141414] text-[9px] uppercase opacity-75">
-                                <th className="p-2">Truss ID</th>
-                                <th className="p-2 text-right">Offset X</th>
-                                <th className="p-2 text-right">Rxn ↓</th>
-                                <th className="p-2 text-right">Uplift ↑</th>
-                                <th className="p-2 text-right">DOL</th>
-                                <th className="p-2 text-center">SST</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {carried.map((c) => {
-                                const isSelected = c.instance.id === selectedCarried?.instance.id;
-                                const rxnDown = c.downReaction !== undefined ? c.downReaction : 0;
-                                const rxnUp = c.upliftReaction !== undefined ? c.upliftReaction : 0;
-                                const dolVal = group.girder.treData?.dol !== undefined && group.girder.treData.dol !== null ? group.girder.treData.dol : null;
-                                return (
-                                    <tr 
-                                        key={c.instance.id} 
-                                        onClick={() => setSelectedCarriedId(c.instance.id)}
-                                        className={cn(
-                                            "border-b border-[#E4E3E0] hover:bg-white cursor-pointer transition-colors",
-                                            isSelected ? "bg-[#141414] text-white border-b border-[#141414]" : "text-[#141414]"
-                                        )}
-                                    >
-                                        <td className="p-2">
-                                            <div className="font-bold">{c.instance.label}</div>
-                                            <div className={cn(
-                                                "text-[8px] font-mono block mt-0.5 leading-none", 
-                                                isSelected ? "text-indigo-300" : "text-indigo-600"
-                                            )}>
-                                                {c.instance.id}
-                                            </div>
-                                        </td>
-                                        <td className="p-2 text-right font-bold flex flex-col items-end">
-                                            <span>{Math.floor(c.localX / 12)}'-{(c.localX % 12).toFixed(2)}"</span>
-                                            <span className="text-[9px] opacity-60 font-medium">({c.localX.toFixed(2)}")</span>
-                                        </td>
-                                        <td className="p-2 text-right font-bold" style={{ color: isSelected ? '#FF6B6B' : '#B91C1C' }}>
-                                            {rxnDown.toFixed(0)} lb
-                                        </td>
-                                        <td className="p-2 text-right" style={{ color: isSelected ? '#4FC3F7' : '#0369A1' }}>
-                                            {rxnUp.toFixed(0)} lb
-                                        </td>
-                                        <td className="p-2 text-right" style={{ color: isSelected ? '#81C784' : '#15803D' }}>
-                                            {dolVal !== null ? dolVal.toFixed(2) : '—'}
-                                        </td>
-                                        <td className="p-1 text-center">
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setSelectedCarriedId(c.instance.id);
-                                                    setSstMode(true);
-                                                }}
-                                                className={cn(
-                                                    "px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider transition-colors",
-                                                    isSelected
-                                                        ? "bg-cyan-600 text-white hover:bg-cyan-500"
-                                                        : "bg-cyan-600/15 text-cyan-700 hover:bg-cyan-600/30"
-                                                )}
-                                                title={`Find hangers for ${c.instance.label}`}
-                                            >
-                                                <Search className="w-3 h-3 inline" />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                            {carried.length === 0 && (
-                                <tr>
-                                    <td colSpan={6} className="p-4 text-center opacity-50 text-[10px]">No carried trusses.</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            {/* Right Section: Core Engineering Workspace (Full Dark Mode) */}
-            <section className="flex-1 flex flex-col bg-[#0C0D14] overflow-hidden">
-                {/* Header Strip */}
-                <div className="h-10 bg-[#12131C] border-b border-[#1E293B] flex items-center justify-between px-4 shrink-0">
-                    <div className="flex items-center space-x-2">
-                        {sstMode ? (
-                            <>
-                                <button
-                                    onClick={() => setSstMode(false)}
-                                    className="flex items-center space-x-1.5 text-[10px] font-mono uppercase font-bold tracking-wider text-zinc-400 hover:text-zinc-200 transition-colors"
-                                >
-                                    <ArrowLeft className="w-3.5 h-3.5" />
-                                    <span>Back to Workspace</span>
-                                </button>
-                                <span className="text-zinc-600 mx-2">|</span>
-                                <Search className="w-3.5 h-3.5 text-cyan-400" />
-                                <span className="text-[10px] font-mono uppercase font-bold tracking-wider text-zinc-300">
-                                    SST Hanger Selector — {selectedCarried?.instance.label}
-                                </span>
-                            </>
-                        ) : (
-                            <>
-                                <Cpu className="w-3.5 h-3.5 text-indigo-400" />
-                                <span className="text-[10px] font-mono uppercase font-bold tracking-wider text-zinc-300">
-                                    Truss Structural Analyzer Workspace
-                                </span>
-                            </>
-                        )}
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        {!sstMode && (
-                            <div className="flex items-center space-x-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span className="text-[9px] font-mono text-emerald-400 uppercase font-bold">AISC solver 2.4</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                {sstMode && selectedCarried ? (
-                    <SSTWorkspace
-                      group={group}
-                      selectedCarried={selectedCarried}
-                      inventory={inventory}
-                      onInventoryChange={onInventoryChange}
-                      onHangersLoaded={onHangersLoaded}
-                    />
+        <>
+            {/* Carried Trusses list */}
+            <AuiPane
+                name="carried"
+                size="list"
+                title={`Carried by ${group.girder.label}`}
+                extra={<span className={AUI.text} {...ATTR}>[{String(carried.length).padStart(2, '0')} Items]</span>}
+            >
+                {carried.length === 0 ? (
+                    <span className={AUI.text} {...ATTR}>No carried trusses.</span>
                 ) : (
+                    <AuiTable
+                        label={`Trusses carried by ${group.girder.label}`}
+                        columns={[
+                            { header: 'Truss ID' },
+                            { header: 'Offset X', align: 'right' },
+                            { header: 'Rxn ↓', align: 'right' },
+                            { header: 'Uplift ↑', align: 'right' },
+                            { header: 'DOL', align: 'right' },
+                            { header: 'SST', align: 'center' },
+                        ]}
+                        rows={carried.map((c) => {
+                            const isSelected = c.instance.id === selectedCarried?.instance.id;
+                            const rxnDown = c.downReaction !== undefined ? c.downReaction : 0;
+                            const rxnUp = c.upliftReaction !== undefined ? c.upliftReaction : 0;
+                            const dolVal = group.girder.treData?.dol !== undefined && group.girder.treData.dol !== null ? group.girder.treData.dol : null;
+                            return {
+                                key: c.instance.id,
+                                selected: isSelected,
+                                onSelect: () => setSelectedCarriedId(c.instance.id),
+                                cells: [
+                                    `${c.instance.label} ${c.instance.id}`,
+                                    `${Math.floor(c.localX / 12)}'-${(c.localX % 12).toFixed(2)}" (${c.localX.toFixed(2)}")`,
+                                    `${rxnDown.toFixed(0)} lb`,
+                                    `${rxnUp.toFixed(0)} lb`,
+                                    dolVal !== null ? dolVal.toFixed(2) : '—',
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedCarriedId(c.instance.id);
+                                            setSstMode(true);
+                                        }}
+                                        className={AUI.iconButton}
+                                        aria-label={`Find hangers for ${c.instance.label}`}
+                                        title={`Find hangers for ${c.instance.label}`}
+                                    >
+                                        <AuiIcon name="magnifying-glass" />
+                                    </button>,
+                                ],
+                            };
+                        })}
+                    />
+                )}
+            </AuiPane>
+
+            {sstView ? (
+                <SSTWorkspace
+                  group={group}
+                  selectedCarried={selectedCarried}
+                  inventory={inventory}
+                  onInventoryChange={onInventoryChange}
+                  onHangersLoaded={onHangersLoaded}
+                  onBack={() => setSstMode(false)}
+                />
+            ) : (
                 <>
-                {/* Split workspace area */}
-                <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-                    {/* Left Panel: The 2 Diagrams Stacked */}
-                    <div className="flex-1 flex flex-col p-4 space-y-4 overflow-y-auto custom-scrollbar">
-                        
+                    {/* Core engineering workspace: the 2 diagrams stacked */}
+                    <AuiPane
+                        name="analyzer"
+                        title="Truss Structural Analyzer Workspace"
+                    >
+                        <span className={AUI.text} {...ATTR}>AISC solver 2.4</span>
                         {/* DIAGRAM 1 — SIDE ELEVATION */}
-                        <div className="border border-[#1E293B] bg-[#0F111A] rounded-md p-4 relative flex flex-col">
-                            <div className="flex justify-between items-center mb-2 pb-1.5 border-b border-[#1E293B]/60">
-                                <div className="text-[10px] font-bold text-zinc-400 tracking-wider uppercase flex items-center space-x-1.5">
-                                    <span className="px-1.5 py-0.5 rounded bg-zinc-800 text-white font-mono text-[8px]">01</span>
-                                    <span>Diagram 1 — Side Elevation Profile</span>
+                        <div className={AUI.panel}>
+                            <div className={AUI.stack}>
+                                <div className={AUI.rowBetween}>
+                                    <span className={AUI.text} {...ATTR}>01 Diagram 1 — Side Elevation Profile</span>
+                                    <span className={AUI.text} {...ATTR}>Active Girder: {group.girder.label}</span>
                                 </div>
-                                <span className="text-[9px] text-[#FF6B6B] font-bold font-mono">
-                                    Active Girder: {group.girder.label}
-                                </span>
-                            </div>
-                            
-                            {/* SVG side elevation canvas */}
-                            <div className="flex-1 w-full bg-[#08090E] rounded border border-[#14151F] py-2 overflow-hidden flex items-center justify-center">
-                                <SideElevationDiagram 
-                                    group={group} 
+                                {/* OPEN: SVG drawing, no AtomicAUI part (GAPS.md) */}
+                                <SideElevationDiagram
+                                    group={group}
                                     span={span}
                                     splitX={splitX}
                                     carried={carried}
@@ -240,28 +171,21 @@ export function GirderDetails({ group, inventory, onInventoryChange, onHangersLo
                                     topChordMaterial={topChordMaterial}
                                     websMaterial={websMaterial}
                                 />
-                            </div>
-                            <div className="mt-1.5 flex justify-between text-[8px] text-zinc-500 font-mono">
-                                <span>Note: Structural coordinate markers scaled in metric inches.</span>
-                                <span className="text-zinc-400 font-semibold">[Top Chords in Red | Bottom Chords in Blue | Webs in Green]</span>
+                                <div className={AUI.rowBetween}>
+                                    <span className={AUI.text} {...ATTR}>Note: Structural coordinate markers scaled in metric inches.</span>
+                                    <span className={AUI.text} {...ATTR}>[Top Chords in Red | Bottom Chords in Blue | Webs in Green]</span>
+                                </div>
                             </div>
                         </div>
 
                         {/* DIAGRAM 2 — PLAN VIEW */}
-                        <div className="border border-[#1E293B] bg-[#0F111A] rounded-md p-4 relative flex flex-col">
-                            <div className="flex justify-between items-center mb-2 pb-1.5 border-b border-[#1E293B]/60">
-                                <div className="text-[10px] font-bold text-zinc-400 tracking-wider uppercase flex items-center space-x-1.5">
-                                    <span className="px-1.5 py-0.5 rounded bg-zinc-800 text-white font-mono text-[8px]">02</span>
-                                    <span>Diagram 2 — Plan Orientation & Lay Spacing</span>
+                        <div className={AUI.panel}>
+                            <div className={AUI.stack}>
+                                <div className={AUI.rowBetween}>
+                                    <span className={AUI.text} {...ATTR}>02 Diagram 2 — Plan Orientation & Lay Spacing</span>
+                                    <span className={AUI.text} {...ATTR}>Total Span: {span}" ({feet}'-{inches}")</span>
                                 </div>
-                                <span className="text-[9px] text-zinc-400 font-mono">
-                                    Total Span: {span}" ({feet}'-{inches}")
-                                </span>
-                            </div>
-
-                            {/* SVG plan view canvas */}
-                            <div className="flex-1 w-full bg-[#08090E] rounded border border-[#14151F] py-2 overflow-hidden flex items-center justify-center">
-                                <PlanViewDiagram 
+                                <PlanViewDiagram
                                     group={group}
                                     span={span}
                                     carried={carried}
@@ -269,236 +193,98 @@ export function GirderDetails({ group, inventory, onInventoryChange, onHangersLo
                                     feet={feet}
                                     inches={inches}
                                 />
-                            </div>
-                            <div className="mt-1.5 flex justify-between text-[8px] text-zinc-500 font-mono">
-                                <span>Dimension tickers show continuous load laying layout spacing.</span>
-                                <span className="text-zinc-400 font-semibold">[X-Girder Central Axis in Blue | Lateral Crossings in Red]</span>
+                                <div className={AUI.rowBetween}>
+                                    <span className={AUI.text} {...ATTR}>Dimension tickers show continuous load laying layout spacing.</span>
+                                    <span className={AUI.text} {...ATTR}>[X-Girder Central Axis in Blue | Lateral Crossings in Red]</span>
+                                </div>
                             </div>
                         </div>
+                    </AuiPane>
 
-                    </div>
-
-                    {/* Right Panel: Results & Properties Table */}
-                    <div className="w-full lg:w-[360px] border-l border-[#1E293B] bg-[#0F111A] p-4 flex flex-col space-y-4 overflow-y-auto shrink-0">
-                        <div className="pb-2 border-b border-[#1E293B] flex items-center justify-between">
-                            <h3 className="text-[10px] font-bold text-zinc-300 tracking-widest uppercase">
-                                Results & Materials Table
-                            </h3>
-                            <span className="text-[8px] font-mono text-zinc-500 uppercase">
-                                Load File: Connected
-                            </span>
-                        </div>
-
+                    {/* Results & properties */}
+                    <AuiPane
+                        name="results"
+                        size="results"
+                        title="Results & Materials Table"
+                    >
+                        <span className={AUI.text} {...ATTR}>Load File: Connected</span>
                         {/* PROFILE ELEMENTS */}
-                        <div className="border border-[#1E293B] bg-[#121422]/50 rounded p-3">
-                            <div className="text-[9px] font-bold uppercase tracking-wider text-indigo-400 mb-2 flex items-center space-x-1.5">
-                                <div className="w-1.5 h-1.5 rounded-full bg-indigo-400"></div>
-                                <span>Profile Chords & Members</span>
-                            </div>
-                            <div className="space-y-2.5 font-mono">
-                                <div>
-                                    <div className="text-[8px] uppercase text-zinc-400 mb-0.5">Top Chord Spec</div>
-                                    <div className="text-xs font-bold text-[#FF6B6B] border-b border-[#2D313F]/60 pb-1 flex justify-between">
-                                        <span>TC 2x4</span>
-                                        <span>{topChordMaterial}</span>
-                                    </div>
-                                    {tcExceptions.length > 0 && (
-                                        <div className="mt-0.5 space-y-0.5">
-                                            {tcExceptions.map((ex, i) => (
-                                                <div key={i} className="flex justify-between text-[10px] text-zinc-400 pl-2">
-                                                    <span className="italic">*Except* {ex.name}:</span>
-                                                    <span className="font-semibold text-[#FF6B6B]/70">{ex.size} {ex.grade} {ex.species}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <div className="text-[8px] uppercase text-zinc-400 mb-0.5">Bottom Chord Spec</div>
-                                    <div className="text-xs text-[#4FC3F7] space-y-1">
-                                        {group.girder.treData?.members && group.girder.treData.members.filter(m => m.type === 'BottomChord').length > 0 ? (
-                                            group.girder.treData.members.filter(m => m.type === 'BottomChord').map((m, idx) => {
-                                                const xs = m.coords.map(c => c.x);
-                                                const minX = xs.length > 0 ? Math.round(Math.min(...xs)) : 0;
-                                                const maxX = xs.length > 0 ? Math.round(Math.max(...xs)) : span;
-                                                // Find authoritative grade from cuttingMembers
-                                                const cut = cuttingMembers.find(c => c.name.toUpperCase() === m.name.toUpperCase() && c.type === 'BottomChord');
-                                                const specStr = cut ? `${cut.size} ${cut.grade} ${cut.species}` : `${m.size} ${m.grade} ${m.species}`;
-                                                return (
-                                                    <div key={idx} className="flex justify-between border-b border-[#2D313F]/60 pb-1">
-                                                        <span className="font-semibold">{m.name} ({minX}" - {maxX}")</span>
-                                                        <span className="font-bold">{specStr}</span>
-                                                    </div>
-                                                );
-                                            })
-                                        ) : (
-                                            <>
-                                                <div className="flex justify-between border-b border-[#2D313F]/60 pb-1">
-                                                    <span className="font-semibold">B1 (0" - {splitX}")</span>
-                                                    <span className="font-bold">{bottomChordMaterial}</span>
-                                                </div>
-                                                <div className="flex justify-between border-b border-[#2D313F]/30 pb-0.5">
-                                                    <span className="font-semibold text-zinc-400">B2 ({splitX}" - {span}")</span>
-                                                    <span className="font-bold text-zinc-300">{bottomChordMaterial}</span>
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-                                    {bcExceptions.length > 0 && !(group.girder.treData?.members && group.girder.treData.members.filter(m => m.type === 'BottomChord').length > 0) && (
-                                        <div className="mt-0.5 space-y-0.5">
-                                            {bcExceptions.map((ex, i) => (
-                                                <div key={i} className="flex justify-between text-[10px] text-zinc-400 pl-2">
-                                                    <span className="italic">*Except* {ex.name}:</span>
-                                                    <span className="font-semibold text-[#4FC3F7]/70">{ex.size} {ex.grade} {ex.species}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <div className="text-[8px] uppercase text-zinc-400 mb-0.5">Truss Webs Spec</div>
-                                    <div className="text-xs font-bold text-[#81C784] border-b border-[#2D313F]/60 pb-1 flex justify-between">
-                                        <span>WEB 2x4</span>
-                                        <span>{websMaterial}</span>
-                                    </div>
-                                    {webExceptions.length > 0 && (
-                                        <div className="mt-0.5 space-y-0.5">
-                                            {webExceptions.map((ex, i) => (
-                                                <div key={i} className="flex justify-between text-[10px] text-zinc-400 pl-2">
-                                                    <span className="italic">*Except* {ex.name}:</span>
-                                                    <span className="font-semibold text-[#81C784]/70">{ex.size} {ex.grade} {ex.species}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
+                        <div className={AUI.panel}>
+                            <div className={AUI.stack}>
+                                <span className={AUI.text} {...ATTR}>Profile Chords & Members</span>
+                                <span className={AUI.text} {...ATTR}>Top Chord Spec</span>
+                                {line('TC 2x4', topChordMaterial)}
+                                {exceptions(tcExceptions)}
+                                <span className={AUI.text} {...ATTR}>Bottom Chord Spec</span>
+                                {hasBottomMembers ? (
+                                    bottomMembers.map((m, idx) => {
+                                        const xs = m.coords.map(c => c.x);
+                                        const minX = xs.length > 0 ? Math.round(Math.min(...xs)) : 0;
+                                        const maxX = xs.length > 0 ? Math.round(Math.max(...xs)) : span;
+                                        // Find authoritative grade from cuttingMembers
+                                        const cut = cuttingMembers.find(c => c.name.toUpperCase() === m.name.toUpperCase() && c.type === 'BottomChord');
+                                        const specStr = cut ? `${cut.size} ${cut.grade} ${cut.species}` : `${m.size} ${m.grade} ${m.species}`;
+                                        return line(`${m.name} (${minX}" - ${maxX}")`, specStr, idx);
+                                    })
+                                ) : (
+                                    <>
+                                        {line(`B1 (0" - ${splitX}")`, bottomChordMaterial, 'b1')}
+                                        {line(`B2 (${splitX}" - ${span}")`, bottomChordMaterial, 'b2')}
+                                    </>
+                                )}
+                                {!hasBottomMembers && exceptions(bcExceptions)}
+                                <span className={AUI.text} {...ATTR}>Truss Webs Spec</span>
+                                {line('WEB 2x4', websMaterial)}
+                                {exceptions(webExceptions)}
                             </div>
                         </div>
 
                         {/* STRUCTURAL REACTIONS */}
-                        <div className="border border-[#1E293B] bg-[#131718]/40 rounded p-3">
-                            <div className="text-[9px] font-bold uppercase tracking-wider text-emerald-400 mb-2.5 flex items-center space-x-1.5">
-                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400"></div>
-                                <span>Structural Reactions</span>
-                            </div>
-                            
-                            <div className="grid grid-cols-2 gap-3.5 mb-3">
-                                <div className="border border-[#1E293B] bg-[#0A0B10] p-2 rounded">
-                                    <div className="text-[8px] text-zinc-400 uppercase tracking-tight mb-0.5">Max Downward</div>
-                                    <div className="text-sm font-mono font-bold text-[#FFB74D] flex items-center space-x-1">
-                                        <ArrowDown className="w-3.5 h-3.5 text-[#FFB74D] shrink-0" />
-                                        <span>{downwardReaction.toLocaleString()} lb</span>
-                                    </div>
-                                </div>
-                                <div className="border border-[#1E293B] bg-[#0A0B10] p-2 rounded">
-                                    <div className="text-[8px] text-zinc-400 uppercase tracking-tight mb-0.5">Uplift Force</div>
-                                    <div className="text-sm font-mono font-bold text-sky-400">
-                                        {upliftReaction.toLocaleString()} lb
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="space-y-2 border-t border-[#1E293B] pt-2 font-mono">
-                                <div className="flex justify-between items-center text-xs">
-                                    <span className="text-zinc-400 text-[9px] uppercase">Service Deflection (L/)</span>
-                                    <span className="font-bold text-[#81C784]">{deflection}</span>
-                                </div>
-                                <div className="flex justify-between items-center text-xs">
-                                    <span className="text-zinc-400 text-[9px] uppercase">CSI Stress Ratio</span>
-                                    <div className="flex items-center space-x-2">
-                                        <span className="font-bold text-white">{csi.toFixed(2)}</span>
-                                        <div className="w-12 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                                            <div 
-                                                className="h-full bg-emerald-500 rounded-full" 
-                                                style={{ width: `${Math.min(100, csi * 100)}%` }}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex justify-between items-center text-xs">
-                                    <span className="text-zinc-400 text-[9px] uppercase">Duration of Load (DOL)</span>
-                                    <span className="font-bold text-indigo-400">{group.girder.treData?.dol !== undefined && group.girder.treData.dol !== null ? group.girder.treData.dol.toFixed(2) : "N/A"}</span>
-                                </div>
-                                <div className="flex justify-between items-center text-xs">
-                                    <span className="text-zinc-400 text-[9px] uppercase">Bearing Side</span>
-                                    <span className="font-bold uppercase text-white">{selectedCarried?.bearingSide ? `${selectedCarried.bearingSide.toUpperCase()} END` : "LEFT END"}</span>
-                                </div>
-                            </div>
-
-                            <div className="mt-3 pt-2 border-t border-[#1E293B]/40 space-y-1 font-mono text-[10px] text-zinc-300">
-                                <div className="text-[8px] text-zinc-500 uppercase tracking-wider mb-1">Reaction Details Checklist</div>
-                                <div className="bg-[#090A0F] p-2 rounded border border-[#1E293B]/45 space-y-1 select-all">
-                                    <div>Rxn Down: {downwardReaction.toLocaleString()} lb ({selectedCarried?.bearingSide ? `${selectedCarried.bearingSide.toUpperCase()} bearing` : "LEFT bearing"})</div>
-                                    <div>Rxn Up: {upliftReaction !== undefined && upliftReaction !== null ? `${upliftReaction} lb` : "N/A" }</div>
-                                    <div>DOL: {group.girder.treData?.dol !== undefined && group.girder.treData.dol !== null ? group.girder.treData.dol.toFixed(2) : "N/A"}</div>
+                        <div className={AUI.panel}>
+                            <div className={AUI.stack}>
+                                <span className={AUI.text} {...ATTR}>Structural Reactions</span>
+                                {line('Max Downward', <><AuiIcon name="arrow-down" />{downwardReaction.toLocaleString()} lb</>)}
+                                {line('Uplift Force', `${upliftReaction.toLocaleString()} lb`)}
+                                {line('Service Deflection (L/)', deflection)}
+                                {line('CSI Stress Ratio', csi.toFixed(2))}
+                                {line('Duration of Load (DOL)', dolText)}
+                                {line('Bearing Side', bearingText)}
+                                <span className={AUI.text} {...ATTR}>Reaction Details Checklist</span>
+                                <div className={AUI.stack}>
+                                    <span className={AUI.text} {...ATTR}>Rxn Down: {downwardReaction.toLocaleString()} lb ({selectedCarried?.bearingSide ? `${selectedCarried.bearingSide.toUpperCase()} bearing` : "LEFT bearing"})</span>
+                                    <span className={AUI.text} {...ATTR}>Rxn Up: {upliftReaction !== undefined && upliftReaction !== null ? `${upliftReaction} lb` : "N/A"}</span>
+                                    <span className={AUI.text} {...ATTR}>DOL: {dolText}</span>
                                 </div>
                             </div>
                         </div>
 
                         {/* SELECTED TRUSS DETAILS IN SOLVER */}
-                        <div className="border border-[#1E293B] bg-[#12131C] rounded p-3 text-[10px] font-mono text-zinc-300">
-                            <div className="text-[8px] uppercase text-zinc-400 font-bold mb-1.5 tracking-wider">
-                                Solver Selected Node Context
-                            </div>
-                            <div className="space-y-1 select-text">
-                                <div className="flex justify-between">
-                                    <span className="text-zinc-500">Node ID:</span>
-                                    <span className="font-bold text-zinc-100">{selectedCarried?.instance.id}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-zinc-500">Label:</span>
-                                    <span className="font-semibold text-zinc-100">{selectedCarried?.instance.label}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-zinc-500">Local Offset:</span>
-                                    <span className="font-bold text-[#FFB74D]">{selectedCarried?.localX.toFixed(2)}"</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-zinc-500">Dist From GE:</span>
-                                    <span className="font-bold text-sky-400">{selectedCarried?.distFromGE?.toFixed(2) || '0.00'}"</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-zinc-500">Spacing:</span>
-                                    <span className="font-bold text-emerald-400">
-                                        {selectedCarried?.spacing != null ? `${selectedCarried.spacing.toFixed(2)}"` : "N/A"}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-zinc-500">Orientation:</span>
-                                    <span className="font-bold text-zinc-100">{selectedCarried?.angle === 90 ? "90° (Perpendicular)" : "0° (Parallel)"}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-zinc-500">Global Rot:</span>
-                                    <span className="font-bold text-zinc-100">{selectedCarried?.rotation || 0}°</span>
-                                </div>
+                        <div className={AUI.panel}>
+                            <div className={AUI.stack}>
+                                <span className={AUI.text} {...ATTR}>Solver Selected Node Context</span>
+                                {line('Node ID:', selectedCarried?.instance.id)}
+                                {line('Label:', selectedCarried?.instance.label)}
+                                {line('Local Offset:', `${selectedCarried?.localX.toFixed(2)}"`)}
+                                {line('Dist From GE:', `${selectedCarried?.distFromGE?.toFixed(2) || '0.00'}"`)}
+                                {line('Spacing:', selectedCarried?.spacing != null ? `${selectedCarried.spacing.toFixed(2)}"` : "N/A")}
+                                {line('Orientation:', selectedCarried?.angle === 90 ? "90° (Perpendicular)" : "0° (Parallel)")}
+                                {line('Global Rot:', `${selectedCarried?.rotation || 0}°`)}
                             </div>
                         </div>
 
                         {/* CONNECTION STATE */}
-                        <div className="mt-auto border-t border-[#1E293B] pt-4.5">
-                            <div className="flex flex-col space-y-1.5 bg-[#081C15] border border-emerald-500/20 rounded p-3">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[9px] uppercase font-bold text-emerald-400 tracking-wider">
-                                        Connection State
-                                    </span>
-                                    <span className="px-2 py-0.5 text-xs font-mono font-black tracking-tight text-emerald-300 bg-emerald-950 border border-emerald-500/40 rounded flex items-center space-x-1 shadow-sm">
-                                        <CheckCircle className="w-3 h-3 text-emerald-400 shrink-0 inline mr-0.5" />
-                                        <span>NOMINAL</span>
-                                    </span>
-                                </div>
-                                <span className="text-[8.5px] leading-relaxed text-emerald-400/75 font-mono">
-                                    Web hangers and fasteners verified compliant under wood design code requirements.
-                                </span>
+                        <div className={AUI.bannerSuccess} role="status" aria-label="Connection State NOMINAL" data-aui-banner-color="success" data-aui-banner-scale="sm">
+                            <div className={AUI.bannerText} {...ATTR}>
+                                Connection State: NOMINAL. Web hangers and fasteners verified compliant under wood design code requirements.
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </AuiPane>
                 </>
-                )}
-            </section>
-        </div>
+            )}
+        </>
     );
 }
+
 
 // ==========================
 // SUB-DIAGRAM COMPONENTS
@@ -696,26 +482,20 @@ function SideElevationDiagram({
     return (
         <svg 
             viewBox={`0 0 ${viewWidth} ${viewHeight}`} 
-            className="w-full h-full select-none"
+            width="100%" height="100%"
+            data-aui-aligned="truss-diagram"
         >
-            {/* Grid Pattern Background for schematic texture */}
-            <defs>
-                <pattern id="elevation-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#2D3142" strokeWidth="0.5" opacity="0.4" />
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#elevation-grid)" />
 
             {/* Dynamic Truss Members (rendered and colored by type) */}
             <g id="truss-members-group">
                 {activeMembers.map((m, idx) => {
                     if (!m.coords || m.coords.length < 2) return null;
                     
-                    let color = "#FFFFFF";
-                    if (m.type === 'TopChord') color = "#FF6B6B";
-                    else if (m.type === 'BottomChord') color = "#4FC3F7";
-                    else if (m.type === 'Web') color = "#81C784";
-                    else if (m.type === 'Peak' || m.type === 'Dummy') color = "#718096";
+                    let color = "var(--theme-on-surface)";
+                    if (m.type === 'TopChord') color = "var(--theme-error)";
+                    else if (m.type === 'BottomChord') color = "var(--theme-info)";
+                    else if (m.type === 'Web') color = "var(--theme-success)";
+                    else if (m.type === 'Peak' || m.type === 'Dummy') color = "var(--theme-muted)";
 
                     let pathD = '';
                     m.coords.forEach((pt: any, i: number) => {
@@ -735,44 +515,44 @@ function SideElevationDiagram({
                             strokeWidth={m.type === 'Web' ? 1.5 : 2} 
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            className="transition-all duration-300 hover:fill-opacity-50"
+                            
                         />
                     );
                 })}
             </g>
 
             {/* Left Bearing Support Triangle (Civil Pinned) */}
-            <g id="support-left" transform={`translate(${scaleX(0)}, ${scaleY(0)})`}>
-                <polygon points="0,0 -8,13 8,13" fill="#A0AEC0" />
-                <line x1="-13" y1="14" x2="13" y2="14" stroke="#A0AEC0" strokeWidth={1.5} />
-                <path d="M -10,14 L-13,17 M -5,14 L -8,17 M 0,14 L -3,17 M 5,14 L 2,17 M 10,14 L 7,17" stroke="#A0AEC0" strokeWidth={1} />
-                <text x="-15" y="11" textAnchor="end" fill="#FFF" className="text-[8px] font-mono opacity-50">L BEARING</text>
+            <g id="support-left" transform={`translate(${scaleX(0)}, ${scaleY(0) + 3})`}>
+                <polygon points="0,0 -8,13 8,13" fill="var(--theme-muted)" />
+                <line x1="-13" y1="14" x2="13" y2="14" stroke="var(--theme-muted)" strokeWidth={1.5} />
+                <path d="M -10,14 L-13,17 M -5,14 L -8,17 M 0,14 L -3,17 M 5,14 L 2,17 M 10,14 L 7,17" fill="none" stroke="var(--theme-muted)" strokeWidth={1} />
+                <text x="-15" y="11" textAnchor="end" fill="var(--theme-on-surface)" fontSize="8" fontFamily="JetBrains Mono, monospace" opacity="0.5">L BEARING</text>
             </g>
 
             {/* Right Bearing Support Triangle (Civil Roller) */}
-            <g id="support-right" transform={`translate(${scaleX(span)}, ${scaleY(0)})`}>
-                <polygon points="0,0 -8,13 8,13" fill="#A0AEC0" />
-                <line x1="-13" y1="14" x2="13" y2="14" stroke="#A0AEC0" strokeWidth={1.5} />
-                <circle cx="-5" cy="16.5" r="1.5" fill="#A0AEC0" />
-                <circle cx="0" cy="16.5" r="1.5" fill="#A0AEC0" />
-                <circle cx="5" cy="16.5" r="1.5" fill="#A0AEC0" />
-                <line x1="-13" y1="19" x2="13" y2="19" stroke="#A0AEC0" strokeWidth={1} />
-                <text x="15" y="11" textAnchor="start" fill="#FFF" className="text-[8px] font-mono opacity-50">R BEARING</text>
+            <g id="support-right" transform={`translate(${scaleX(span)}, ${scaleY(0) + 3})`}>
+                <polygon points="0,0 -8,13 8,13" fill="var(--theme-muted)" />
+                <line x1="-13" y1="14" x2="13" y2="14" stroke="var(--theme-muted)" strokeWidth={1.5} />
+                <circle cx="-5" cy="16.5" r="1.5" fill="var(--theme-muted)" />
+                <circle cx="0" cy="16.5" r="1.5" fill="var(--theme-muted)" />
+                <circle cx="5" cy="16.5" r="1.5" fill="var(--theme-muted)" />
+                <line x1="-13" y1="19" x2="13" y2="19" stroke="var(--theme-muted)" strokeWidth={1} />
+                <text x="15" y="11" textAnchor="start" fill="var(--theme-on-surface)" fontSize="8" fontFamily="JetBrains Mono, monospace" opacity="0.5">R BEARING</text>
             </g>
 
             {/* Member labels in Diagram */}
             {/* Top Chord Spec Tag */}
             <g id="label-top-chord" transform={`translate(${viewWidth / 2}, ${scaleY(maxY) - 15})`}>
-                <rect x="-65" y="-9" width="130" height="15" rx="2" fill="#201116" stroke="#FF6B6B" strokeWidth="1" opacity="0.9" />
-                <text textAnchor="middle" y="2" fill="#FFF" className="text-[9px] font-mono font-bold tracking-tight">
+                <rect x="-65" y="-9" width="130" height="15" rx="2" fill="var(--theme-surface-alt)" stroke="var(--theme-error)" strokeWidth="1" opacity="0.9" />
+                <text textAnchor="middle" y="2" fill="var(--theme-on-surface)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="700" letterSpacing="-0.025em">
                     {topChordMaterial}
                 </text>
             </g>
 
             {/* Webs Spec Tag */}
             <g id="label-webs" transform={`translate(${viewWidth / 2}, ${scaleY((minY + maxY) / 2)})`}>
-                <rect x="-55" y="-8" width="110" height="15" rx="2" fill="#0C1B14" stroke="#81C784" strokeWidth="1" opacity="0.95" />
-                <text textAnchor="middle" y="3" fill="#FFF" className="text-[9px] font-mono font-bold tracking-tight">
+                <rect x="-55" y="-8" width="110" height="15" rx="2" fill="var(--theme-surface-alt)" stroke="var(--theme-success)" strokeWidth="1" opacity="0.95" />
+                <text textAnchor="middle" y="3" fill="var(--theme-on-surface)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="700" letterSpacing="-0.025em">
                     {websMaterial}
                 </text>
             </g>
@@ -787,18 +567,18 @@ function SideElevationDiagram({
                     return (
                         <g key={idx}>
                             <g id={`label-chord-dynamic-${idx}`} transform={`translate(${scaleX(midX)}, ${scaleY(0) + 30})`}>
-                                <text textAnchor="middle" fill="#FFFFFF" className="text-[10px] font-mono font-bold">
+                                <text textAnchor="middle" fill="var(--theme-on-surface)" fontSize="10" fontFamily="JetBrains Mono, monospace" fontWeight="700">
                                     {m.name} {m.size} {m.grade} {m.species}
                                 </text>
-                                <text textAnchor="middle" y="9" fill="#4FC3F7" className="text-[7.5px] font-mono opacity-80">
+                                <text textAnchor="middle" y="9" fill="var(--theme-info)" fontSize="7.5" fontFamily="JetBrains Mono, monospace" opacity="0.8">
                                     x = {minX}" to {maxX}"
                                 </text>
-                                <line x1={-scaleX(midX) + scaleX(minX)} y1="-10" x2={-scaleX(midX) + scaleX(maxX)} y2="-10" stroke="#4FC3F7" strokeWidth="0.75" opacity="0.4" strokeDasharray="2,2" />
+                                <line x1={-scaleX(midX) + scaleX(minX)} y1="-10" x2={-scaleX(midX) + scaleX(maxX)} y2="-10" stroke="var(--theme-info)" strokeWidth="0.75" opacity="0.4" strokeDasharray="2,2" />
                             </g>
                             {idx < arr.length - 1 && (
                                 <g id={`chord-split-tic-${idx}`} transform={`translate(${scaleX(maxX)}, ${scaleY(0)})`}>
-                                    <line x1="0" y1="-10" x2="0" y2="10" stroke="#FFFFFF" strokeWidth={2} />
-                                    <text x="0" y="20" textAnchor="middle" fill="#FFF" className="text-[8px] font-mono font-bold">
+                                    <line x1="0" y1="-10" x2="0" y2="10" stroke="var(--theme-on-surface)" strokeWidth={2} />
+                                    <text x="0" y="20" textAnchor="middle" fill="var(--theme-on-surface)" fontSize="8" fontFamily="JetBrains Mono, monospace" fontWeight="700">
                                         SPLIT {maxX}"
                                     </text>
                                 </g>
@@ -810,32 +590,32 @@ function SideElevationDiagram({
                 <>
                     {/* B1 Label */}
                     <g id="label-chord-b1" transform={`translate(${scaleX(splitX / 2)}, ${scaleY(0) + 30})`}>
-                        <text textAnchor="middle" fill="#FFFFFF" className="text-[10px] font-mono font-bold">
+                        <text textAnchor="middle" fill="var(--theme-on-surface)" fontSize="10" fontFamily="JetBrains Mono, monospace" fontWeight="700">
                             B1 B1/B2 2x6 2400F SP
                         </text>
-                        <text textAnchor="middle" y="9" fill="#4FC3F7" className="text-[7.5px] font-mono opacity-80">
+                        <text textAnchor="middle" y="9" fill="var(--theme-info)" fontSize="7.5" fontFamily="JetBrains Mono, monospace" opacity="0.8">
                             x = 0 to {splitX}"
                         </text>
-                        <line x1={-scaleX(splitX/2) + scaleX(0)} y1="-10" x2={-scaleX(splitX/2) + scaleX(splitX)} y2="-10" stroke="#4FC3F7" strokeWidth="0.75" opacity="0.4" strokeDasharray="2,2" />
+                        <line x1={-scaleX(splitX/2) + scaleX(0)} y1="-10" x2={-scaleX(splitX/2) + scaleX(splitX)} y2="-10" stroke="var(--theme-info)" strokeWidth="0.75" opacity="0.4" strokeDasharray="2,2" />
                     </g>
 
                     {/* Split boundary tick */}
                     <g id="chord-split-tic" transform={`translate(${scaleX(splitX)}, ${scaleY(0)})`}>
-                        <line x1="0" y1="-10" x2="0" y2="10" stroke="#FFFFFF" strokeWidth={2} />
-                        <text x="0" y="20" textAnchor="middle" fill="#FFF" className="text-[8px] font-mono font-bold">
+                        <line x1="0" y1="-10" x2="0" y2="10" stroke="var(--theme-on-surface)" strokeWidth={2} />
+                        <text x="0" y="20" textAnchor="middle" fill="var(--theme-on-surface)" fontSize="8" fontFamily="JetBrains Mono, monospace" fontWeight="700">
                             SPLIT {splitX}"
                         </text>
                     </g>
 
                     {/* B2 Label */}
                     <g id="label-chord-b2" transform={`translate(${scaleX(splitX + (span - splitX) / 2)}, ${scaleY(0) + 30})`}>
-                        <text textAnchor="middle" fill="#FFFFFF" className="text-[10px] font-mono font-bold">
+                        <text textAnchor="middle" fill="var(--theme-on-surface)" fontSize="10" fontFamily="JetBrains Mono, monospace" fontWeight="700">
                             B2 B1/B2 2x6 2400F SP
                         </text>
-                        <text textAnchor="middle" y="9" fill="#4FC3F7" className="text-[7.5px] font-mono opacity-80">
+                        <text textAnchor="middle" y="9" fill="var(--theme-info)" fontSize="7.5" fontFamily="JetBrains Mono, monospace" opacity="0.8">
                             x = {splitX}" to {span}"
                         </text>
-                        <line x1={-scaleX(splitX + (span - splitX)/2) + scaleX(splitX)} y1="-10" x2={-scaleX(splitX + (span - splitX)/2) + scaleX(span)} y2="-10" stroke="#4FC3F7" strokeWidth="0.75" opacity="0.4" strokeDasharray="2,2" />
+                        <line x1={-scaleX(splitX + (span - splitX)/2) + scaleX(splitX)} y1="-10" x2={-scaleX(splitX + (span - splitX)/2) + scaleX(span)} y2="-10" stroke="var(--theme-info)" strokeWidth="0.75" opacity="0.4" strokeDasharray="2,2" />
                     </g>
                 </>
             )}
@@ -852,19 +632,19 @@ function SideElevationDiagram({
                         {/* Downward reaction loading indicator at corresponding bottom chord offset */}
                         <g transform={`translate(${arrowX}, ${arrowY})`}>
                             {/* Orange Downward Directional Force Pointer */}
-                            <g className="transition-all duration-300">
+                            <g >
                                 {/* Vertical Arrow Shaft connecting from above bottom chord down to it */}
                                 <line 
                                     x1={0} y1={-44} 
                                     x2={0} y2={0} 
-                                    stroke="#FFB74D" 
+                                    stroke="var(--theme-warning)" 
                                     strokeWidth={isSelected ? 4.5 : 2.5} 
                                     strokeLinecap="round"
                                 />
                                 {/* Solid Arrowhead touching the bottom chord */}
                                 <polygon 
                                     points="0,3 -5,-8 5,-8" 
-                                    fill="#FFB74D" 
+                                    fill="var(--theme-warning)" 
                                     transform={`scale(${isSelected ? 1.4 : 1})`}
                                 />
                             </g>
@@ -873,8 +653,8 @@ function SideElevationDiagram({
                             <circle 
                                 cx={0} cy={0} 
                                 r={isSelected ? 5.5 : 3.5} 
-                                fill={isSelected ? "#FFF" : "#FFB74D"} 
-                                stroke="#14151F" 
+                                fill={isSelected ? "var(--theme-on-surface)" : "var(--theme-warning)"} 
+                                stroke="var(--theme-surface-alt)" 
                                 strokeWidth={1.5} 
                             />
 
@@ -886,19 +666,16 @@ function SideElevationDiagram({
                                     width={isSelected ? 84 : 72} 
                                     height="15" 
                                     rx="2.5" 
-                                    fill={isSelected ? "#FFB74D" : "#1A1B26"} 
-                                    stroke={isSelected ? "#FFF" : "#FFB74D"} 
+                                    fill={isSelected ? "var(--theme-warning)" : "var(--theme-surface-alt)"} 
+                                    stroke={isSelected ? "var(--theme-on-surface)" : "var(--theme-warning)"} 
                                     strokeWidth={isSelected ? 1.5 : 0.75} 
                                     opacity="0.95" 
                                 />
                                 <text 
                                     textAnchor="middle" 
                                     y="-2" 
-                                    fill={isSelected ? "#111" : "#FFF"} 
-                                    className={cn(
-                                        "text-[8.5px] font-mono",
-                                        isSelected ? "font-black" : "font-semibold"
-                                    )}
+                                    fill={isSelected ? "var(--theme-on-warning)" : "var(--theme-on-surface)"} 
+                                    fontSize="8.5" fontFamily="JetBrains Mono, monospace" fontWeight={isSelected ? 900 : 600}
                                 >
                                     {c.instance.label} x={Math.floor(c.localX / 12)}'-{(c.localX % 12).toFixed(2)}"
                                 </text>
@@ -910,11 +687,11 @@ function SideElevationDiagram({
 
             {/* Horizontal Timeline/Ruler X Axis (0 to Span) at absolute base */}
             <g id="x-axis-base" transform={`translate(0, ${viewHeight - 20})`}>
-                <line x1={scaleX(0)} y1="0" x2={scaleX(span)} y2="0" stroke="#475569" strokeWidth="1.5" />
+                <line x1={scaleX(0)} y1="0" x2={scaleX(span)} y2="0" stroke="var(--theme-outlined)" strokeWidth="1.5" />
                 
                 {/* 0 and Span tick marks */}
-                <line x1={scaleX(0)} y1="-4" x2={scaleX(0)} y2="4" stroke="#A0AEC0" strokeWidth="2" />
-                <text x={scaleX(0)} y="13" textAnchor="middle" fill="#FFFFFF" className="text-[9px] font-mono font-bold">0"</text>
+                <line x1={scaleX(0)} y1="-4" x2={scaleX(0)} y2="4" stroke="var(--theme-muted)" strokeWidth="2" />
+                <text x={scaleX(0)} y="13" textAnchor="middle" fill="var(--theme-on-surface)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="700">0"</text>
                 
                 {/* Intermediate incremental distance ticks */}
                 {Array.from({ length: 5 }).map((_, index) => {
@@ -923,14 +700,14 @@ function SideElevationDiagram({
                     const tickX = scaleX(inchVal);
                     return (
                         <g key={`tick-${index}`} transform={`translate(${tickX}, 0)`}>
-                            <line x1="0" y1="-3" x2="0" y2="3" stroke="#475569" strokeWidth="1" />
-                            <text y="12" textAnchor="middle" fill="#A0AEC0" className="text-[8px] font-mono opacity-80">{inchVal}"</text>
+                            <line x1="0" y1="-3" x2="0" y2="3" stroke="var(--theme-outlined)" strokeWidth="1" />
+                            <text y="12" textAnchor="middle" fill="var(--theme-muted)" fontSize="8" fontFamily="JetBrains Mono, monospace" opacity="0.8">{inchVal}"</text>
                         </g>
                     );
                 })}
 
-                <line x1={scaleX(span)} y1="-4" x2={scaleX(span)} y2="4" stroke="#A0AEC0" strokeWidth="2" />
-                <text x={scaleX(span)} y="13" textAnchor="middle" fill="#FFFFFF" className="text-[9px] font-mono font-bold">{span}" (Span)</text>
+                <line x1={scaleX(span)} y1="-4" x2={scaleX(span)} y2="4" stroke="var(--theme-muted)" strokeWidth="2" />
+                <text x={scaleX(span)} y="13" textAnchor="middle" fill="var(--theme-on-surface)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="700">{span}" (Span)</text>
             </g>
         </svg>
     )
@@ -969,26 +746,25 @@ function PlanViewDiagram({
     return (
         <svg 
             viewBox={`0 0 ${viewWidth} ${viewHeight}`} 
-            className="w-full h-full select-none"
+            width="100%" height="100%"
+            data-aui-aligned="truss-diagram"
         >
-            <rect width="100%" height="100%" fill="url(#elevation-grid)" />
-
             {/* Thick Blue Girder Axis Centroid Line */}
             <line 
                 x1={scaleX(0)} y1={axisY} 
                 x2={scaleX(span)} y2={axisY} 
-                stroke="#4FC3F7" 
+                stroke="var(--theme-info)" 
                 strokeWidth={9} 
                 strokeLinecap="round"
             />
 
             {/* Left and Right end capping limits */}
-            <line x1={scaleX(0)} y1={axisY - 25} x2={scaleX(0)} y2={axisY + 25} stroke="#cbd5e1" strokeWidth={3} />
-            <line x1={scaleX(span)} y1={axisY - 25} x2={scaleX(span)} y2={axisY + 25} stroke="#cbd5e1" strokeWidth={3} />
+            <line x1={scaleX(0)} y1={axisY - 25} x2={scaleX(0)} y2={axisY + 25} stroke="var(--theme-outlined)" strokeWidth={3} />
+            <line x1={scaleX(span)} y1={axisY - 25} x2={scaleX(span)} y2={axisY + 25} stroke="var(--theme-outlined)" strokeWidth={3} />
 
             {/* End Point Labels */}
-            <text x={scaleX(span) + 6} y={axisY + 3} fill="#A0AEC0" className="text-[9px] font-mono font-bold">LEFT (GE)</text>
-            <text x={scaleX(0) - 6} y={axisY + 3} textAnchor="end" fill="#A0AEC0" className="text-[9px] font-mono font-bold">RIGHT</text>
+            <text x={scaleX(span) + 6} y={axisY + 3} fill="var(--theme-muted)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="700">LEFT (GE)</text>
+            <text x={scaleX(0) - 6} y={axisY + 3} textAnchor="end" fill="var(--theme-muted)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="700">RIGHT</text>
 
             {/* Carried trusses indicators */}
             {carried.map((c) => {
@@ -1009,7 +785,7 @@ function PlanViewDiagram({
                                 <line 
                                     x1={arrowX} y1={axisY - extTop} 
                                     x2={arrowX} y2={axisY + extBottom} 
-                                    stroke="#FF6B6B" 
+                                    stroke="var(--theme-error)" 
                                     strokeWidth={isSelected ? 4 : 2} 
                                     strokeLinecap="round"
                                 />
@@ -1017,7 +793,7 @@ function PlanViewDiagram({
                                 {c.side !== 'below' && (
                                     <polygon 
                                         points="0,-3 -4,5 4,5" 
-                                        fill="#FF6B6B"
+                                        fill="var(--theme-error)"
                                         transform={`translate(${arrowX}, ${axisY - extTop}) scale(${isSelected ? 1.4 : 1})`}
                                     />
                                 )}
@@ -1025,7 +801,7 @@ function PlanViewDiagram({
                                 {c.side !== 'above' && (
                                     <polygon 
                                         points="0,3 -4,-5 4,-5" 
-                                        fill="#FF6B6B"
+                                        fill="var(--theme-error)"
                                         transform={`translate(${arrowX}, ${axisY + extBottom}) scale(${isSelected ? 1.4 : 1})`}
                                     />
                                 )}
@@ -1037,7 +813,7 @@ function PlanViewDiagram({
                                     <line 
                                         x1={arrowX - 25} y1={axisY - 15} 
                                         x2={arrowX + 25} y2={axisY - 15} 
-                                        stroke="#FFB74D" 
+                                        stroke="var(--theme-warning)" 
                                         strokeWidth={isSelected ? 5 : 3} 
                                         strokeLinecap="round"
                                     />
@@ -1045,7 +821,7 @@ function PlanViewDiagram({
                                     <line 
                                         x1={arrowX - 25} y1={axisY + 15} 
                                         x2={arrowX + 25} y2={axisY + 15} 
-                                        stroke="#FFB74D" 
+                                        stroke="var(--theme-warning)" 
                                         strokeWidth={isSelected ? 5 : 3} 
                                         strokeLinecap="round"
                                     />
@@ -1057,8 +833,8 @@ function PlanViewDiagram({
                         <circle 
                             cx={arrowX} cy={axisY} 
                             r={isSelected ? 5.5 : 3.5} 
-                            fill={isSelected ? "#FFF" : (isPerpendicular ? "#FF6B6B" : "#FFB74D")} 
-                            stroke="#14151F" 
+                            fill={isSelected ? "var(--theme-on-surface)" : (isPerpendicular ? "var(--theme-error)" : "var(--theme-warning)")} 
+                            stroke="var(--theme-surface-alt)" 
                             strokeWidth={1.5}
                         />
 
@@ -1068,12 +844,13 @@ function PlanViewDiagram({
                                 cx={arrowX} cy={axisY} 
                                 r={12} 
                                 fill="none" 
-                                stroke={isPerpendicular ? "#FFB74D" : "#4FC3F7"} 
+                                stroke={isPerpendicular ? "var(--theme-warning)" : "var(--theme-info)"} 
                                 strokeWidth={2}
                                 strokeDasharray="4,2"
-                                className="animate-spin text-opacity-100"
-                                style={{ transformOrigin: `${arrowX}px ${axisY}px`, animationDuration: '6s' }}
-                            />
+                                
+                            >
+                                <animateTransform attributeName="transform" type="rotate" from={`0 ${arrowX} ${axisY}`} to={`360 ${arrowX} ${axisY}`} dur="6s" repeatCount="indefinite" />
+                            </circle>
                         )}
                     </g>
                 )
@@ -1097,20 +874,20 @@ function PlanViewDiagram({
                             <line 
                                 x1={leftBound + 3} y1={dimY} 
                                 x2={rightBound - 3} y2={dimY} 
-                                stroke="#A0AEC0" 
+                                stroke="var(--theme-muted)" 
                                 strokeWidth="1" 
                                 opacity="0.65"
                             />
                             {/* Slashes at boundaries */}
-                            <line x1={leftBound - 3} y1={dimY + 3} x2={leftBound + 3} y2={dimY - 3} stroke="#A0AEC0" strokeWidth="1" opacity="0.65" />
-                            <line x1={rightBound - 3} y1={dimY + 3} x2={rightBound + 3} y2={dimY - 3} stroke="#A0AEC0" strokeWidth="1" opacity="0.65" />
+                            <line x1={leftBound - 3} y1={dimY + 3} x2={leftBound + 3} y2={dimY - 3} stroke="var(--theme-muted)" strokeWidth="1" opacity="0.65" />
+                            <line x1={rightBound - 3} y1={dimY + 3} x2={rightBound + 3} y2={dimY - 3} stroke="var(--theme-muted)" strokeWidth="1" opacity="0.65" />
 
                             {/* Dimension value text */}
                             <text 
                                 x={centerPoint} y={dimY - 4} 
                                 textAnchor="middle" 
-                                fill="#FFFFFF" 
-                                className="text-[10px] font-mono font-bold tracking-tight bg-[#0C0D14]"
+                                fill="var(--theme-on-surface)" 
+                                fontSize="10" fontFamily="JetBrains Mono, monospace" fontWeight="700" letterSpacing="-0.025em"
                             >
                                 {segmentWidth.toFixed(2)}"
                             </text>
@@ -1121,8 +898,8 @@ function PlanViewDiagram({
 
             {/* PLAN CENTER DIAGRAM LABEL */}
             <g id="center-tag" transform={`translate(${viewWidth / 2}, 20)`}>
-                <text textAnchor="middle" fill="#FFFFFF" className="text-xs font-bold tracking-wider font-sans uppercase">
-                    {group.girder.label} Girder — {span}" ({feet}'-{inches}")
+                <text textAnchor="middle" fill="var(--theme-on-surface)" fontSize="12" fontWeight="700" letterSpacing="0.05em" fontFamily="inherit">
+                    {`${group.girder.label} Girder — ${span}" (${feet}'-${inches}")`.toUpperCase()}
                 </text>
             </g>
         </svg>

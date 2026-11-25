@@ -15,8 +15,10 @@ import type { GirderGroup } from '../types';
 import type { SSTHangerResult } from '../lib/sst-types';
 import type { ParsedInventory } from '../lib/inventory';
 import { isInStock } from '../lib/inventory';
-import { Package, PackageCheck, Download, AlertCircle, FileSpreadsheet, Loader2, CheckCircle2, XCircle } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { AUI, ATTR } from '../aui';
+import { AuiIcon } from './AuiIcon';
+import { AuiTable } from './AuiTable';
+import { AuiPane } from './AuiPane';
 import { loadInventoryFile } from '../lib/inventory';
 import { buildSSTPayload } from '../lib/sst-mapper';
 import { submitToSST, hasSSTToken } from '../lib/sst-api';
@@ -369,108 +371,88 @@ export function JobSummaryTable({
     : 0;
 
   return (
-    <div className="flex-1 flex flex-col bg-[#0C0D14] overflow-hidden text-zinc-200">
+    <AuiPane name="job-summary" title="Job Summary">
       {/* Header */}
-      <div className="bg-[#12131C] border-b border-[#1E293B] px-5 py-3 shrink-0 flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-3">
-          <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
-          <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-200">Job Hanger Schedule</span>
-          <span className="text-[9px] font-mono text-zinc-500">
-            {resolvedConnections}/{totalConnections} connections resolved
-          </span>
-        </div>
+      <div className={AUI.row}>
+        <AuiIcon name="file-spreadsheet" />
+        <h3 className={AUI.heading} {...ATTR}>Job Hanger Schedule</h3>
+        <span className={AUI.text} {...ATTR}>
+          {resolvedConnections}/{totalConnections} connections resolved
+        </span>
+      </div>
 
-        <div className="flex items-center gap-2 flex-wrap">
-          {/* Inventory import */}
-          <input ref={fileInputRef} type="file" accept=".xml" className="hidden" onChange={handleInventoryFile} />
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded text-[9px] font-mono border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-zinc-200 transition-colors"
-          >
-            <Package className="w-3 h-3" />
-            {hasInventory ? 'Replace Inventory XML' : 'Import Inventory XML'}
-          </button>
-          {hasInventory && (
-            <>
-              <span className="flex items-center gap-1 text-[9px] font-mono text-emerald-400">
-                <PackageCheck className="w-3 h-3" />
-                {inventory!.inStockSet.size} models in stock
-              </span>
-              <button
-                onClick={() => onInventoryChange(null)}
-                className="text-[9px] text-zinc-600 hover:text-zinc-400 transition-colors"
-              >
-                Remove
-              </button>
-            </>
-          )}
-
-          {/* Re-query button (shown when not running) */}
-          {!isQuerying && (
-            <button
-              onClick={runBatchQuery}
-              disabled={!hasSSTToken()}
-              className={cn(
-                'flex items-center gap-1.5 px-2.5 py-1 rounded text-[9px] font-mono border transition-colors',
-                hasSSTToken()
-                  ? 'border-cyan-700 text-cyan-400 hover:border-cyan-500 hover:text-cyan-200'
-                  : 'border-zinc-700 text-zinc-600 cursor-not-allowed'
-              )}
-              title="Re-query SST for all connections"
-            >
-              Re-query All
+      <div className={AUI.row} role="group" aria-label="Job actions">
+        {/* Inventory import */}
+        <input ref={fileInputRef} type="file" accept=".xml" hidden onChange={handleInventoryFile} />
+        <button type="button" onClick={() => fileInputRef.current?.click()} className={AUI.button}>
+          <AuiIcon name="box" />
+          {hasInventory ? 'Replace Inventory XML' : 'Import Inventory XML'}
+        </button>
+        {hasInventory && (
+          <>
+            <span className={AUI.text} {...ATTR}>
+              <AuiIcon name="box-check" />
+              {inventory!.inStockSet.size} models in stock
+            </span>
+            <button type="button" onClick={() => onInventoryChange(null)} className={AUI.buttonQuiet}>
+              Remove
             </button>
-          )}
+          </>
+        )}
 
-          {/* Stop button (shown while running) */}
-          {isQuerying && (
-            <button
-              onClick={() => { abortRef.current = true; }}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded text-[9px] font-mono border border-red-700 text-red-400 hover:border-red-500 transition-colors"
-            >
-              Stop
-            </button>
-          )}
-
-          {/* Export Excel */}
+        {/* Re-query button (shown when not running) */}
+        {!isQuerying && (
           <button
-            onClick={handleExportExcel}
-            disabled={resolvedConnections === 0}
-            className={cn(
-              'flex items-center gap-1.5 px-3 py-1 rounded text-[9px] font-bold uppercase tracking-wider transition-colors',
-              resolvedConnections > 0
-                ? 'bg-emerald-700 text-white hover:bg-emerald-600'
-                : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
-            )}
+            type="button"
+            onClick={runBatchQuery}
+            disabled={!hasSSTToken()}
+            className={hasSSTToken() ? AUI.button : AUI.buttonDisabled}
+            title="Re-query SST for all connections"
           >
-            <Download className="w-3 h-3" />
-            Export Excel
+            Re-query All
           </button>
-        </div>
+        )}
+
+        {/* Stop button (shown while running) */}
+        {isQuerying && (
+          <button type="button" onClick={() => { abortRef.current = true; }} className={AUI.button}>
+            Stop
+          </button>
+        )}
+
+        {/* Export Excel */}
+        <button
+          type="button"
+          onClick={handleExportExcel}
+          disabled={resolvedConnections === 0}
+          className={resolvedConnections > 0 ? AUI.buttonMain : AUI.buttonDisabled}
+        >
+          <AuiIcon name="download" />
+          Export Excel
+        </button>
       </div>
 
       {/* No token warning */}
       {noToken && (
-        <div className="bg-red-950/40 border-b border-red-700/40 px-5 py-2 shrink-0 flex items-center gap-2">
-          <XCircle className="w-3.5 h-3.5 text-red-400 shrink-0" />
-          <span className="text-[9px] font-mono text-red-400">
+        <div className={AUI.bannerError} role="alert" aria-label="No SST token found. Set the Bearer token in the SST Workspace (Analyzer tab) first, then re-query." data-aui-banner-color="error" data-aui-banner-scale="sm">
+          <div className={AUI.bannerText} {...ATTR}>
             No SST token found. Set the Bearer token in the SST Workspace (Analyzer tab) first, then re-query.
-          </span>
+          </div>
         </div>
       )}
 
       {/* Batch progress bar */}
       {batchProgress && (
-        <div className="bg-[#0F111A] border-b border-[#1E293B] px-5 py-2 shrink-0">
-          <div className="flex items-center gap-3 mb-1.5">
+        <div className={AUI.stack}>
+          <div className={AUI.row}>
             {isQuerying ? (
-              <Loader2 className="w-3 h-3 text-cyan-400 animate-spin shrink-0" />
+              <AuiIcon name="spinner" />
             ) : batchDone && batchProgress.failed === 0 ? (
-              <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+              <AuiIcon name="circle-check" />
             ) : (
-              <AlertCircle className="w-3 h-3 text-amber-400 shrink-0" />
+              <AuiIcon name="circle-exclamation" />
             )}
-            <span className="text-[9px] font-mono text-zinc-400">
+            <span className={AUI.text} {...ATTR}>
               {isQuerying
                 ? `Querying SST API… ${batchProgress.completed}/${batchProgress.total}`
                 : batchProgress.aborted
@@ -479,257 +461,130 @@ export function JobSummaryTable({
               }
             </span>
             {batchProgress.failed > 0 && (
-              <span className="text-[9px] font-mono text-red-400">{batchProgress.failed} failed</span>
+              <span className={AUI.text} {...ATTR}>{batchProgress.failed} failed</span>
             )}
           </div>
-          {/* Progress bar */}
-          <div className="h-1 bg-zinc-800 rounded-full overflow-hidden">
-            <div
-              className={cn(
-                'h-full rounded-full transition-all duration-300',
-                isQuerying ? 'bg-cyan-500' : batchProgress.failed > 0 ? 'bg-amber-500' : 'bg-emerald-500'
-              )}
-              style={{ width: `${batchPct}%` }}
-            />
-          </div>
+          {/* OPEN: no Progress recipe in the standard (GAPS.md); the browser's own progress element */}
+          <progress value={batchPct} max={100} aria-label="Batch progress" />
         </div>
       )}
 
       {/* Stats bar */}
-      <div className="bg-[#0F111A] border-b border-[#1E293B] px-5 py-2 shrink-0 flex items-center gap-6 flex-wrap">
-        <div className="flex items-center gap-2">
-          <span className="text-[9px] font-mono text-zinc-500 uppercase">Total Connections</span>
-          <span className="text-[13px] font-bold text-zinc-200">{totalConnections}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-[9px] font-mono text-zinc-500 uppercase">Hangers Selected</span>
-          <span className="text-[13px] font-bold text-emerald-400">{resolvedConnections}</span>
-        </div>
-
-        {hasInventory && (
-          <div className="flex items-center gap-2">
-            <span className="text-[9px] font-mono text-zinc-500 uppercase">Selection Mode</span>
-            <span className="text-[9px] font-mono text-emerald-400">Lowest Cost In-Stock (fallback: lowest cost overall)</span>
-          </div>
-        )}
-        {!hasInventory && (
-          <div className="flex items-center gap-2">
-            <span className="text-[9px] font-mono text-zinc-500 uppercase">Selection Mode</span>
-            <span className="text-[9px] font-mono text-zinc-400">Lowest Cost Overall (no inventory loaded)</span>
-          </div>
-        )}
+      <div className={AUI.row} role="group" aria-label="Job statistics">
+        <span className={AUI.text} {...ATTR}>Total Connections</span>
+        <span className={AUI.text} {...ATTR}>{totalConnections}</span>
+        <span className={AUI.text} {...ATTR}>Hangers Selected</span>
+        <span className={AUI.text} {...ATTR}>{resolvedConnections}</span>
+        <span className={AUI.text} {...ATTR}>Selection Mode</span>
+        <span className={AUI.text} {...ATTR}>
+          {hasInventory ? 'Lowest Cost In-Stock (fallback: lowest cost overall)' : 'Lowest Cost Overall (no inventory loaded)'}
+        </span>
       </div>
 
-      {/* Table area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
-
-        {/* ── Model Summary Table ── */}
-        {modelSummary.length > 0 && (
-          <div className="border border-sky-800/50 rounded overflow-hidden shadow-lg shadow-sky-900/10">
-            {/* Header bar */}
-            <div className="bg-gradient-to-r from-sky-950 to-[#1A1B26] border-b border-sky-800/50 px-4 py-2.5 flex items-center gap-3">
-              <div className="w-1.5 h-4 rounded-sm bg-sky-500 shrink-0" />
-              <span className="text-[11px] font-bold text-sky-100 uppercase tracking-wider">
-                Hanger Model Summary
-              </span>
-              <span className="text-[9px] font-mono text-sky-400/70">
-                {modelSummary.length} model{modelSummary.length !== 1 ? 's' : ''} · {resolvedConnections} total hangers
-              </span>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-[11px] font-mono">
-                <thead>
-                  <tr className="text-[9px] uppercase tracking-wider text-sky-300 border-b border-sky-800/50 bg-sky-950/60">
-                    <th className="py-2.5 px-4">Hanger Model</th>
-                    <th className="py-2.5 px-4 text-right">Qty</th>
-                    {hasInventory && (
-                      <th className="py-2.5 px-4 text-right">In Stock</th>
-                    )}
-                  </tr>
-                </thead>
-                <tbody>
-                  {modelSummary.map(({ model, count, inStockCount }, idx) => (
-                    <tr
-                      key={model}
-                      className={cn(
-                        'border-b border-sky-900/30 transition-colors hover:bg-sky-900/20',
-                        idx % 2 === 0 ? 'bg-[#0C0D14]' : 'bg-sky-950/20'
-                      )}
-                    >
-                      <td className="py-2 px-4">
-                        <span className="font-bold text-sky-100 bg-sky-900/40 px-2 py-0.5 rounded text-[10px] border border-sky-800/40">
-                          {model}
-                        </span>
-                      </td>
-                      <td className="py-2 px-4 text-right">
-                        <span className="font-bold text-white text-[13px]">{count}</span>
-                      </td>
-                      {hasInventory && (
-                        <td className="py-2 px-4 text-right">
-                          {inStockCount > 0
-                            ? <span className="text-emerald-400 font-bold text-[12px]">{inStockCount}</span>
-                            : <span className="text-zinc-600">—</span>
-                          }
-                        </td>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr className="border-t-2 border-sky-700/50 bg-sky-950/60">
-                    <td className="py-2.5 px-4 text-[9px] uppercase tracking-wider text-sky-400 font-bold">Total</td>
-                    <td className="py-2.5 px-4 text-right font-bold text-white text-[14px]">
-                      {modelSummary.reduce((s, m) => s + m.count, 0)}
-                    </td>
-                    {hasInventory && (
-                      <td className="py-2.5 px-4 text-right font-bold text-emerald-400 text-[13px]">
-                        {modelSummary.reduce((s, m) => s + m.inStockCount, 0) || '—'}
-                      </td>
-                    )}
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
+      {/* ── Model Summary Table ── */}
+      {modelSummary.length > 0 && (
+        <div className={AUI.stack}>
+          <div className={AUI.row}>
+            <h3 className={AUI.heading} {...ATTR}>Hanger Model Summary</h3>
+            <span className={AUI.text} {...ATTR}>
+              {modelSummary.length} model{modelSummary.length !== 1 ? 's' : ''} · {resolvedConnections} total hangers
+            </span>
           </div>
-        )}
+          <AuiTable
+            label="Hanger Model Summary"
+            columns={[
+              { header: 'Hanger Model' },
+              { header: 'Qty', align: 'right' },
+              ...(hasInventory ? [{ header: 'In Stock', align: 'right' as const }] : []),
+            ]}
+            rows={[
+              ...modelSummary.map(({ model, count, inStockCount }) => ({
+                key: model,
+                cells: [
+                  model,
+                  count,
+                  ...(hasInventory ? [inStockCount > 0 ? inStockCount : '—'] : []),
+                ],
+              })),
+              {
+                key: '__total',
+                cells: [
+                  'Total',
+                  modelSummary.reduce((s, m) => s + m.count, 0),
+                  ...(hasInventory ? [modelSummary.reduce((s, m) => s + m.inStockCount, 0) || '—'] : []),
+                ],
+              },
+            ]}
+          />
+        </div>
+      )}
 
-        {girders.length === 0 && (
-          <div className="text-center py-16 text-zinc-500 text-[11px] font-mono">
-            No girder data loaded.
-          </div>
-        )}
+      {girders.length === 0 && (
+        <span className={AUI.text} {...ATTR}>No girder data loaded.</span>
+      )}
 
-        {Array.from(byGirder.entries()).map(([girderId, gRows]) => {
-          const girderLabel = gRows[0].girderLabel;
-          const girderResolved = gRows.filter((r) => r.hanger !== null).length;
+      {Array.from(byGirder.entries()).map(([girderId, gRows]) => {
+        const girderLabel = gRows[0].girderLabel;
+        const girderResolved = gRows.filter((r) => r.hanger !== null).length;
 
-          return (
-            <div key={girderId} className="border border-[#1E293B] rounded overflow-hidden">
-              {/* Girder header */}
-              <div className="bg-[#1A1B26] border-b border-[#1E293B] px-4 py-2 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-[11px] font-bold text-zinc-100 uppercase tracking-wider">
-                    Girder: {girderLabel}
-                  </span>
-                  <span className="text-[9px] font-mono text-zinc-500">
-                    {girderResolved}/{gRows.length} connections
-                  </span>
-                </div>
-
-              </div>
-
-              {/* Connections table */}
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-[11px] font-mono">
-                  <thead>
-                    <tr className="text-[9px] uppercase text-zinc-500 border-b border-[#1E293B] bg-[#12131C]">
-                      <th className="py-2 px-3">Carried Truss</th>
-                      <th className="py-2 px-3 text-right">Offset X</th>
-                      <th className="py-2 px-3">Hanger Model</th>
-                      <th className="py-2 px-3 text-right">DL Cap (lb)</th>
-                      <th className="py-2 px-3 text-right">UL Cap (lb)</th>
-                      <th className="py-2 px-3 text-right">Width</th>
-                      <th className="py-2 px-3 text-right">Height</th>
-                      <th className="py-2 px-3 text-center">Stock</th>
-                      <th className="py-2 px-3">Selection</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {gRows.map((row) => (
-                      <tr
-                        key={row.carriedId}
-                        className="border-b border-[#1E293B]/40 hover:bg-[#1E293B]/20 transition-colors"
-                      >
-                        {/* Carried truss */}
-                        <td className="py-2 px-3">
-                          <div className="font-bold text-zinc-200">{row.carriedLabel}</div>
-                          <div className="text-[8px] text-zinc-600 truncate max-w-[120px]">{row.carriedId}</div>
-                        </td>
-
-                        {/* Offset X */}
-                        <td className="py-2 px-3 text-right text-zinc-400">
-                          {fmtOffset(row.offsetX)}
-                        </td>
-
-                        {/* Hanger model */}
-                        <td className="py-2 px-3">
-                          {row.hanger ? (
-                            <div className="flex items-center gap-1.5">
-                              {row.isInStock && (
-                                <PackageCheck className="w-3 h-3 text-emerald-400 shrink-0" title="In stock" />
-                              )}
-                              <span className={cn(
-                                'font-bold',
-                                row.isInStock ? 'text-emerald-400' : 'text-zinc-200'
-                              )}>
-                                {row.hanger.model}
-                              </span>
-                            </div>
-                          ) : (
-                            <span className="text-zinc-600 italic text-[9px]">
-                              {Object.keys(hangerResultsMap).some(k => k.startsWith(row.girderId) && k.endsWith(row.carriedId))
-                                ? 'No results from SST'
-                                : 'Run SST query first'}
-                            </span>
-                          )}
-                        </td>
-
-                        {/* Hanger capacities */}
-                        <td className="py-2 px-3 text-right text-zinc-400">
-                          {row.hanger ? row.hanger.downloadLoad.toLocaleString() : '—'}
-                        </td>
-                        <td className="py-2 px-3 text-right text-zinc-400">
-                          {row.hanger ? row.hanger.upliftLoad.toLocaleString() : '—'}
-                        </td>
-                        <td className="py-2 px-3 text-right text-zinc-400">
-                          {row.hanger && row.hanger.width > 0 ? `${row.hanger.width.toFixed(3)}"` : '—'}
-                        </td>
-                        <td className="py-2 px-3 text-right text-zinc-400">
-                          {row.hanger && row.hanger.height > 0 ? `${row.hanger.height.toFixed(3)}"` : '—'}
-                        </td>
-
-                        {/* In stock */}
-                        <td className="py-2 px-3 text-center">
-                          {row.hanger ? (
-                            row.isInStock
-                              ? <PackageCheck className="w-3.5 h-3.5 text-emerald-400 mx-auto" />
-                              : <span className="text-[9px] text-zinc-600">—</span>
-                          ) : (
-                            <span className="text-[9px] text-zinc-700">—</span>
-                          )}
-                        </td>
-
-                        {/* Selection mode badge */}
-                        <td className="py-2 px-3">
-                          {row.selectionMode === 'available' && (
-                            <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-emerald-900/40 text-emerald-400 border border-emerald-700/40">
-                              In-Stock
-                            </span>
-                          )}
-                          {row.selectionMode === 'cheapest' && (
-                            <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
-                              Lowest Cost
-                            </span>
-                          )}
-                          {row.selectionMode === 'none' && (
-                            <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-amber-900/30 text-amber-500 border border-amber-700/30">
-                              Pending
-                            </span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-
-
-                </table>
-              </div>
+        return (
+          <div key={girderId} className={AUI.stack}>
+            {/* Girder header */}
+            <div className={AUI.row}>
+              <h3 className={AUI.heading} {...ATTR}>Girder: {girderLabel}</h3>
+              <span className={AUI.text} {...ATTR}>{girderResolved}/{gRows.length} connections</span>
             </div>
-          );
-        })}
 
-
-      </div>
-    </div>
+            {/* Connections table */}
+            <AuiTable
+              label={`Girder ${girderLabel} connections`}
+              columns={[
+                { header: 'Carried Truss' },
+                { header: 'Offset X', align: 'right' },
+                { header: 'Hanger Model' },
+                { header: 'DL Cap (lb)', align: 'right' },
+                { header: 'UL Cap (lb)', align: 'right' },
+                { header: 'Width', align: 'right' },
+                { header: 'Height', align: 'right' },
+                { header: 'Stock', align: 'center' },
+                { header: 'Selection' },
+              ]}
+              rows={gRows.map((row) => ({
+                key: row.carriedId,
+                cells: [
+                  <>
+                    <div>{row.carriedLabel}</div>
+                    <div>{row.carriedId}</div>
+                  </>,
+                  fmtOffset(row.offsetX),
+                  row.hanger ? (
+                    <>
+                      {row.isInStock && <AuiIcon name="box-check" />}
+                      {row.hanger.model}
+                    </>
+                  ) : (
+                    Object.keys(hangerResultsMap).some(k => k.startsWith(row.girderId) && k.endsWith(row.carriedId))
+                      ? 'No results from SST'
+                      : 'Run SST query first'
+                  ),
+                  row.hanger ? row.hanger.downloadLoad.toLocaleString() : '—',
+                  row.hanger ? row.hanger.upliftLoad.toLocaleString() : '—',
+                  row.hanger && row.hanger.width > 0 ? `${row.hanger.width.toFixed(3)}"` : '—',
+                  row.hanger && row.hanger.height > 0 ? `${row.hanger.height.toFixed(3)}"` : '—',
+                  row.hanger ? (row.isInStock ? <AuiIcon name="box-check" /> : '—') : '—',
+                  row.selectionMode === 'available' ? (
+                    <span className={AUI.chipSuccess}><span className={AUI.chipLabel} {...ATTR}>In-Stock</span></span>
+                  ) : row.selectionMode === 'cheapest' ? (
+                    <span className={AUI.chipNeutral}><span className={AUI.chipLabel} {...ATTR}>Lowest Cost</span></span>
+                  ) : (
+                    <span className={AUI.chipWarning}><span className={AUI.chipLabel} {...ATTR}>Pending</span></span>
+                  ),
+                ],
+              }))}
+            />
+          </div>
+        );
+      })}
+    </AuiPane>
   );
 }

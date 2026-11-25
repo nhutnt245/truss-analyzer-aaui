@@ -7,8 +7,9 @@ import { JobSummaryTable } from './components/JobSummaryTable';
 import type { HangerResultsMap } from './components/JobSummaryTable';
 import { GirderGroup, LogEntry } from './types';
 import { analyzeFiles } from './lib/parser';
-import { FileSpreadsheet } from 'lucide-react';
-import { cn } from './lib/utils';
+import { AUI, ATTR } from './aui';
+import { AuiIcon } from './components/AuiIcon';
+import { AuiPane } from './components/AuiPane';
 import type { ParsedInventory } from './lib/inventory';
 import type { SSTHangerResult } from './lib/sst-types';
 
@@ -88,98 +89,82 @@ export default function App() {
   const resolvedCount = Object.keys(hangerResultsMap).length;
 
   return (
-    <div className="h-screen w-full bg-[#E4E3E0] text-[#141414] font-sans flex flex-col overflow-hidden select-none">
-        <header className="h-14 border-b border-[#141414] flex items-center justify-between px-6 bg-[#D4D3D0] shrink-0">
-            <div className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-[#141414] text-white flex items-center justify-center font-bold text-lg italic">T</div>
-                {/* App name to be added later */}
-            </div>
-            {/* Tab bar */}
-            <div className="flex items-center gap-1">
-                <button
-                    onClick={() => setActiveTab('analyzer')}
-                    className={cn(
-                        'px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded transition-colors',
-                        activeTab === 'analyzer'
-                            ? 'bg-[#141414] text-white'
-                            : 'text-[#141414] hover:bg-[#141414]/10'
-                    )}
+    <div className={AUI.page}>
+        <div role="menubar" aria-orientation="horizontal" className={AUI.topBar}>
+            <nav aria-label="Main" className={AUI.topNav}>
+                <a
+                    href="#analyzer"
+                    role="link"
+                    aria-current={activeTab === 'analyzer' ? 'page' : undefined}
+                    onClick={(e) => { e.preventDefault(); setActiveTab('analyzer'); }}
+                    className={AUI.link}
                 >
                     Analyzer
-                </button>
-                <button
-                    onClick={() => setActiveTab('summary')}
-                    className={cn(
-                        'flex items-center gap-1.5 px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded transition-colors',
-                        activeTab === 'summary'
-                            ? 'bg-[#141414] text-white'
-                            : 'text-[#141414] hover:bg-[#141414]/10'
-                    )}
+                </a>
+                <a
+                    href="#summary"
+                    role="link"
+                    aria-current={activeTab === 'summary' ? 'page' : undefined}
+                    onClick={(e) => { e.preventDefault(); setActiveTab('summary'); }}
+                    className={AUI.link}
                 >
-                    <FileSpreadsheet className="w-3.5 h-3.5" />
+                    <AuiIcon name="file-spreadsheet" />
                     Job Summary
                     {resolvedCount > 0 && (
-                        <span className={cn(
-                            'text-[8px] font-black px-1.5 py-0.5 rounded-full',
-                            activeTab === 'summary' ? 'bg-white text-[#141414]' : 'bg-[#141414] text-white'
-                        )}>
-                            {resolvedCount}
+                        <span className={activeTab === 'summary' ? AUI.chipNeutral : AUI.chipInfo}>
+                            <span className={AUI.chipLabel} {...ATTR}>{resolvedCount}</span>
                         </span>
                     )}
-                </button>
-            </div>
-            <div className="flex items-center space-x-2">
-            </div>
-        </header>
+                </a>
+            </nav>
+            <div className={AUI.topSpacer}></div>
+            <button type="button" aria-label="Toggle theme" data-aui-theme-toggle className={AUI.topButton}>
+                <AuiIcon name="moon" />
+            </button>
+        </div>
 
-        <main className="flex-1 flex overflow-hidden">
-            {/* Left Sidebar — always visible */}
-            <aside className="w-56 border-r border-[#141414] shrink-0 flex flex-col bg-[#EDEDED]">
-                <div className="border-b border-[#141414] bg-[#F2F2F2]">
-                    <FileUpload onAnalyze={handleAnalyze} onLog={handleLog} />
-                </div>
-                <div className="flex-1 flex flex-col min-h-0">
-                    <GirderList 
-                        girders={girders} 
-                        selectedId={selectedGirderId}
-                        onSelect={(id) => { setSelectedGirderId(id); setActiveTab('analyzer'); }} 
-                    />
-                </div>
-            </aside>
-
-            {/* Main Content Area */}
-            <section className="flex-1 flex flex-col min-w-0 bg-[#DEDCD7]">
-                {activeTab === 'analyzer' && (
-                    <div className="flex-1 flex overflow-hidden">
-                        <GirderDetails
-                            group={selectedGirder}
-                            inventory={inventory}
-                            onInventoryChange={setInventory}
-                            onHangersLoaded={handleHangersLoaded}
-                        />
-                    </div>
+        <div className={AUI.panes} data-aui-panes="page under-bar">
+            {/* Left sidebar: always visible */}
+            <AuiPane
+                name="girders"
+                size="side"
+                title="Girder Trusses"
+                extra={girders.length > 0 && (
+                    <span className={AUI.text} {...ATTR}>[{String(girders.length).padStart(2, '0')} Units]</span>
                 )}
-                {activeTab === 'summary' && (
-                    <div className="flex-1 flex overflow-hidden">
-                        <JobSummaryTable
-                            girders={girders}
-                            hangerResultsMap={hangerResultsMap}
-                            inventory={inventory}
-                            onInventoryChange={setInventory}
-                            onHangersLoaded={handleHangersLoaded}
-                        />
-                    </div>
-                )}
-            </section>
-        </main>
+            >
+                <FileUpload onAnalyze={handleAnalyze} onLog={handleLog} />
+                <GirderList
+                    girders={girders}
+                    selectedId={selectedGirderId}
+                    onSelect={(id) => { setSelectedGirderId(id); setActiveTab('analyzer'); }}
+                />
+                <div className={AUI.row} role="group" aria-label="Status">
+                    <span className={AUI.chipSuccess}><span className={AUI.chipLabel} {...ATTR}>IFC Engine Ready</span></span>
+                    <span className={AUI.text} {...ATTR}>TRE Solver Connected</span>
+                    <span className={AUI.text} {...ATTR}>2023-10-27 14:42:01</span>
+                </div>
+            </AuiPane>
 
-        <footer className="h-8 border-t border-[#141414] bg-[#D4D3D0] flex items-center px-4 justify-between shrink-0">
-            <div className="flex items-center space-x-6 text-[9px] font-bold uppercase tracking-tight">
-                <div className="flex items-center"><span className="w-2 h-2 rounded-full bg-green-600 mr-2"></span> IFC Engine Ready</div>
-                <div className="flex items-center opacity-60">TRE Solver Connected</div>
-            </div>
-            <div className="text-[9px] font-mono opacity-40">2023-10-27 14:42:01</div>
-        </footer>
+            {/* Main content area */}
+            {activeTab === 'analyzer' && (
+                <GirderDetails
+                    group={selectedGirder}
+                    inventory={inventory}
+                    onInventoryChange={setInventory}
+                    onHangersLoaded={handleHangersLoaded}
+                />
+            )}
+            {activeTab === 'summary' && (
+                <JobSummaryTable
+                    girders={girders}
+                    hangerResultsMap={hangerResultsMap}
+                    inventory={inventory}
+                    onInventoryChange={setInventory}
+                    onHangersLoaded={handleHangersLoaded}
+                />
+            )}
+        </div>
     </div>
   );
 }

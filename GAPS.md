@@ -1,0 +1,10 @@
+- No part: progress bar (JobSummaryTable batch query). The standard has no Progress recipe; the browser's own `<progress>` is used.
+- No part: drawings (`PlanViewDiagram`, `SideElevationDiagram` in GirderDetails.tsx).
+- Decision: clickable boxes (GirderList rows became `button`s; section headers still to decide).
+- Gap: no footer in AtomicAUI; the old status footer (IFC Engine Ready / TRE Solver Connected / timestamp) now sits at the bottom of the Girder Trusses pane (the top bar holds only the links and the theme toggle).
+- Gap: connection-type boxes (SSTWorkspace) have no part; shown as `panel` / tonal panel (selected).
+- Gap: dead code not restyled (not imported anywhere): `HangerPanel.tsx`, `ExportTab.tsx`, `LogPanel.tsx` (LogPanel is only imported by App, unused).
+- Aligned widget `truss-diagram`: the two SVG drawings in GirderDetails.tsx (side elevation, plan view); colours now read the theme variables, geometry and behaviour unchanged; cannot give: AtomicAUI anatomy, spacing inside the drawing.
+- Note (drawing): the two bearing supports in the side elevation were moved 3 units down so they no longer touch the truss members (check-standard AUI-05); the grid pattern background was dropped.
+- Not verified by a check: select and accordion in the SST Input pane are only reachable after opening a girder, so check-behaviour sees none; tested by hand (opens, picks, closes; section toggles).
+- Not run: restyle-done (needs restyle-before.json from restyle-inventory, which was not made before the first edit).
