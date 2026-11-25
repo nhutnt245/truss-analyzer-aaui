@@ -1,0 +1,784 @@
+{
+ "atomicaui": "7.0.9",
+ "themes": {
+  "atomic": {
+   "dark": {
+    "roles": {
+     "disabled": "rgb(66, 66, 66)",
+     "error": "rgb(252, 165, 165)",
+     "info": "rgb(147, 197, 253)",
+     "muted": "rgb(203, 213, 225)",
+     "on-disabled": "rgb(148, 163, 184)",
+     "on-error": "rgb(31, 5, 8)",
+     "on-info": "rgb(10, 18, 48)",
+     "on-overlay": "rgb(248, 250, 252)",
+     "on-primary": "rgb(59, 20, 8)",
+     "on-raised": "rgb(248, 250, 252)",
+     "on-secondary": "rgb(18, 18, 18)",
+     "on-success": "rgb(2, 25, 16)",
+     "on-surface": "rgb(248, 250, 252)",
+     "on-surface-alt": "rgb(248, 250, 252)",
+     "on-warning": "rgb(40, 17, 0)",
+     "outlined": "rgb(100, 116, 139)",
+     "overlay": "rgb(71, 85, 105)",
+     "primary": "rgb(253, 186, 116)",
+     "raised": "rgb(51, 65, 85)",
+     "secondary": "rgb(255, 255, 255)",
+     "shadow-0": "rgba(255, 255, 255, 0)",
+     "shadow-10": "rgba(255, 255, 255, 0.1)",
+     "shadow-15": "rgba(255, 255, 255, 0.15)",
+     "shadow-20": "rgba(255, 255, 255, 0.2)",
+     "shadow-25": "rgba(255, 255, 255, 0.25)",
+     "shadow-30": "rgba(255, 255, 255, 0.3)",
+     "shadow-5": "rgba(255, 255, 255, 0.05)",
+     "success": "rgb(134, 239, 172)",
+     "surface": "rgb(18, 18, 18)",
+     "surface-alt": "rgb(30, 41, 59)",
+     "text": "rgb(255, 255, 255)",
+     "transparent": "rgba(255, 255, 255, 0)",
+     "warning": "rgb(252, 211, 77)"
+    },
+    "chart": [
+     "color(srgb 0.993333 0.77 0.536667)",
+     "color(srgb 0.64 0.806667 0.993333)",
+     "color(srgb 0.596667 0.946667 0.723333)",
+     "color(srgb 0.99 0.7 0.7)",
+     "color(srgb 0.99 0.853333 0.406667)",
+     "color(srgb 0.826667 0.86 0.9)"
+    ],
+    "elevations": [
+     {
+      "name": "0",
+      "shadow": "rgba(255, 255, 255, 0) 0px 0px 0px 0px"
+     },
+     {
+      "name": "1",
+      "shadow": "rgba(255, 255, 255, 0.05) 0px 1px 2px 0px"
+     },
+     {
+      "name": "2",
+      "shadow": "rgba(255, 255, 255, 0.1) 0px 2px 4px 0px"
+     },
+     {
+      "name": "3",
+      "shadow": "rgba(255, 255, 255, 0.15) 0px 3px 8px 0px"
+     },
+     {
+      "name": "4",
+      "shadow": "rgba(255, 255, 255, 0.2) 0px 4px 12px 0px"
+     },
+     {
+      "name": "5",
+      "shadow": "rgba(255, 255, 255, 0.2) 0px 6px 16px 0px"
+     },
+     {
+      "name": "6",
+      "shadow": "rgba(255, 255, 255, 0.25) 0px 8px 24px -1px"
+     },
+     {
+      "name": "7",
+      "shadow": "rgba(255, 255, 255, 0.25) 0px 12px 32px -2px"
+     },
+     {
+      "name": "8",
+      "shadow": "rgba(255, 255, 255, 0.3) 0px 16px 40px -4px"
+     }
+    ]
+   },
+   "dark-hc": {
+    "roles": {
+     "disabled": "rgb(158, 158, 158)",
+     "error": "rgb(252, 165, 165)",
+     "info": "rgb(147, 197, 253)",
+     "muted": "rgb(241, 245, 249)",
+     "on-disabled": "rgb(241, 245, 249)",
+     "on-error": "rgb(0, 0, 0)",
+     "on-info": "rgb(0, 0, 0)",
+     "on-overlay": "rgb(255, 255, 255)",
+     "on-primary": "rgb(0, 0, 0)",
+     "on-raised": "rgb(255, 255, 255)",
+     "on-secondary": "rgb(18, 18, 18)",
+     "on-success": "rgb(0, 0, 0)",
+     "on-surface": "rgb(255, 255, 255)",
+     "on-surface-alt": "rgb(255, 255, 255)",
+     "on-warning": "rgb(0, 0, 0)",
+     "outlined": "rgb(203, 213, 225)",
+     "overlay": "rgb(51, 65, 85)",
+     "primary": "rgb(253, 186, 116)",
+     "raised": "rgb(30, 41, 59)",
+     "secondary": "rgb(255, 255, 255)",
+     "shadow-0": "rgba(255, 255, 255, 0)",
+     "shadow-10": "rgba(255, 255, 255, 0.1)",
+     "shadow-15": "rgba(255, 255, 255, 0.15)",
+     "shadow-20": "rgba(255, 255, 255, 0.2)",
+     "shadow-25": "rgba(255, 255, 255, 0.25)",
+     "shadow-30": "rgba(255, 255, 255, 0.3)",
+     "shadow-5": "rgba(255, 255, 255, 0.05)",
+     "success": "rgb(134, 239, 172)",
+     "surface": "rgb(0, 0, 0)",
+     "surface-alt": "rgb(18, 18, 18)",
+     "text": "rgb(255, 255, 255)",
+     "transparent": "rgba(255, 255, 255, 0)",
+     "warning": "rgb(252, 211, 77)"
+    },
+    "chart": [
+     "color(srgb 0.993333 0.77 0.536667)",
+     "color(srgb 0.64 0.806667 0.993333)",
+     "color(srgb 0.596667 0.946667 0.723333)",
+     "color(srgb 0.99 0.7 0.7)",
+     "color(srgb 0.99 0.853333 0.406667)",
+     "color(srgb 0.953333 0.966667 0.98)"
+    ],
+    "elevations": [
+     {
+      "name": "0",
+      "shadow": "rgba(255, 255, 255, 0) 0px 0px 0px 0px"
+     },
+     {
+      "name": "1",
+      "shadow": "rgba(255, 255, 255, 0.05) 0px 1px 2px 0px"
+     },
+     {
+      "name": "2",
+      "shadow": "rgba(255, 255, 255, 0.1) 0px 2px 4px 0px"
+     },
+     {
+      "name": "3",
+      "shadow": "rgba(255, 255, 255, 0.15) 0px 3px 8px 0px"
+     },
+     {
+      "name": "4",
+      "shadow": "rgba(255, 255, 255, 0.2) 0px 4px 12px 0px"
+     },
+     {
+      "name": "5",
+      "shadow": "rgba(255, 255, 255, 0.2) 0px 6px 16px 0px"
+     },
+     {
+      "name": "6",
+      "shadow": "rgba(255, 255, 255, 0.25) 0px 8px 24px -1px"
+     },
+     {
+      "name": "7",
+      "shadow": "rgba(255, 255, 255, 0.25) 0px 12px 32px -2px"
+     },
+     {
+      "name": "8",
+      "shadow": "rgba(255, 255, 255, 0.3) 0px 16px 40px -4px"
+     }
+    ]
+   },
+   "light": {
+    "roles": {
+     "disabled": "rgb(224, 224, 224)",
+     "error": "rgb(231, 80, 76)",
+     "info": "rgb(59, 130, 246)",
+     "muted": "rgb(71, 85, 105)",
+     "on-disabled": "rgb(100, 116, 139)",
+     "on-error": "rgb(255, 255, 255)",
+     "on-info": "rgb(255, 255, 255)",
+     "on-overlay": "rgb(18, 18, 18)",
+     "on-primary": "rgb(255, 255, 255)",
+     "on-raised": "rgb(18, 18, 18)",
+     "on-secondary": "rgb(255, 255, 255)",
+     "on-success": "rgb(255, 255, 255)",
+     "on-surface": "rgb(18, 18, 18)",
+     "on-surface-alt": "rgb(18, 18, 18)",
+     "on-warning": "rgb(255, 255, 255)",
+     "outlined": "rgb(148, 163, 184)",
+     "overlay": "rgb(203, 213, 225)",
+     "primary": "rgb(255, 83, 8)",
+     "raised": "rgb(226, 232, 240)",
+     "secondary": "rgb(18, 18, 18)",
+     "shadow-0": "rgba(0, 0, 0, 0)",
+     "shadow-10": "rgba(0, 0, 0, 0.1)",
+     "shadow-15": "rgba(0, 0, 0, 0.15)",
+     "shadow-20": "rgba(0, 0, 0, 0.2)",
+     "shadow-25": "rgba(0, 0, 0, 0.25)",
+     "shadow-30": "rgba(0, 0, 0, 0.3)",
+     "shadow-5": "rgba(0, 0, 0, 0.05)",
+     "success": "rgb(22, 163, 74)",
+     "surface": "rgb(255, 255, 255)",
+     "surface-alt": "rgb(241, 245, 249)",
+     "text": "rgb(0, 0, 0)",
+     "transparent": "rgba(255, 255, 255, 0)",
+     "warning": "rgb(217, 119, 6)"
+    },
+    "chart": [
+     "color(srgb 0.85 0.276667 0.0266667)",
+     "color(srgb 0.196667 0.433333 0.82)",
+     "color(srgb 0.0733333 0.543333 0.246667)",
+     "color(srgb 0.77 0.266667 0.253333)",
+     "color(srgb 0.723333 0.396667 0.02)",
+     "color(srgb 0.236667 0.283333 0.35)"
+    ],
+    "elevations": [
+     {
+      "name": "0",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+     },
+     {
+      "name": "1",
+      "shadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+     },
+     {
+      "name": "2",
+      "shadow": "rgba(0, 0, 0, 0.1) 0px 2px 4px 0px"
+     },
+     {
+      "name": "3",
+      "shadow": "rgba(0, 0, 0, 0.15) 0px 3px 8px 0px"
+     },
+     {
+      "name": "4",
+      "shadow": "rgba(0, 0, 0, 0.2) 0px 4px 12px 0px"
+     },
+     {
+      "name": "5",
+      "shadow": "rgba(0, 0, 0, 0.2) 0px 6px 16px 0px"
+     },
+     {
+      "name": "6",
+      "shadow": "rgba(0, 0, 0, 0.25) 0px 8px 24px -1px"
+     },
+     {
+      "name": "7",
+      "shadow": "rgba(0, 0, 0, 0.25) 0px 12px 32px -2px"
+     },
+     {
+      "name": "8",
+      "shadow": "rgba(0, 0, 0, 0.3) 0px 16px 40px -4px"
+     }
+    ]
+   },
+   "light-hc": {
+    "roles": {
+     "disabled": "rgb(97, 97, 97)",
+     "error": "rgb(185, 28, 28)",
+     "info": "rgb(37, 99, 235)",
+     "muted": "rgb(30, 41, 59)",
+     "on-disabled": "rgb(15, 23, 42)",
+     "on-error": "rgb(255, 255, 255)",
+     "on-info": "rgb(255, 255, 255)",
+     "on-overlay": "rgb(0, 0, 0)",
+     "on-primary": "rgb(255, 255, 255)",
+     "on-raised": "rgb(0, 0, 0)",
+     "on-secondary": "rgb(255, 255, 255)",
+     "on-success": "rgb(255, 255, 255)",
+     "on-surface": "rgb(0, 0, 0)",
+     "on-surface-alt": "rgb(0, 0, 0)",
+     "on-warning": "rgb(255, 255, 255)",
+     "outlined": "rgb(30, 41, 59)",
+     "overlay": "rgb(148, 163, 184)",
+     "primary": "rgb(194, 65, 12)",
+     "raised": "rgb(203, 213, 225)",
+     "secondary": "rgb(18, 18, 18)",
+     "shadow-0": "rgba(0, 0, 0, 0)",
+     "shadow-10": "rgba(0, 0, 0, 0.1)",
+     "shadow-15": "rgba(0, 0, 0, 0.15)",
+     "shadow-20": "rgba(0, 0, 0, 0.2)",
+     "shadow-25": "rgba(0, 0, 0, 0.25)",
+     "shadow-30": "rgba(0, 0, 0, 0.3)",
+     "shadow-5": "rgba(0, 0, 0, 0.05)",
+     "success": "rgb(21, 128, 61)",
+     "surface": "rgb(255, 255, 255)",
+     "surface-alt": "rgb(226, 232, 240)",
+     "text": "rgb(0, 0, 0)",
+     "transparent": "rgba(255, 255, 255, 0)",
+     "warning": "rgb(180, 83, 9)"
+    },
+    "chart": [
+     "color(srgb 0.646667 0.216667 0.04)",
+     "color(srgb 0.123333 0.33 0.783333)",
+     "color(srgb 0.07 0.426667 0.203333)",
+     "color(srgb 0.616667 0.0933333 0.0933333)",
+     "color(srgb 0.6 0.276667 0.03)",
+     "color(srgb 0.1 0.136667 0.196667)"
+    ],
+    "elevations": [
+     {
+      "name": "0",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+     },
+     {
+      "name": "1",
+      "shadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+     },
+     {
+      "name": "2",
+      "shadow": "rgba(0, 0, 0, 0.1) 0px 2px 4px 0px"
+     },
+     {
+      "name": "3",
+      "shadow": "rgba(0, 0, 0, 0.15) 0px 3px 8px 0px"
+     },
+     {
+      "name": "4",
+      "shadow": "rgba(0, 0, 0, 0.2) 0px 4px 12px 0px"
+     },
+     {
+      "name": "5",
+      "shadow": "rgba(0, 0, 0, 0.2) 0px 6px 16px 0px"
+     },
+     {
+      "name": "6",
+      "shadow": "rgba(0, 0, 0, 0.25) 0px 8px 24px -1px"
+     },
+     {
+      "name": "7",
+      "shadow": "rgba(0, 0, 0, 0.25) 0px 12px 32px -2px"
+     },
+     {
+      "name": "8",
+      "shadow": "rgba(0, 0, 0, 0.3) 0px 16px 40px -4px"
+     }
+    ]
+   }
+  },
+  "sp": {
+   "dark": {
+    "roles": {
+     "disabled": "rgb(66, 66, 66)",
+     "error": "rgb(252, 165, 165)",
+     "info": "rgb(147, 197, 253)",
+     "muted": "rgb(203, 213, 225)",
+     "on-disabled": "rgb(148, 163, 184)",
+     "on-error": "rgb(31, 5, 8)",
+     "on-info": "rgb(10, 18, 48)",
+     "on-overlay": "rgb(248, 250, 252)",
+     "on-primary": "rgb(8, 47, 73)",
+     "on-raised": "rgb(248, 250, 252)",
+     "on-secondary": "rgb(8, 47, 73)",
+     "on-success": "rgb(2, 25, 16)",
+     "on-surface": "rgb(248, 250, 252)",
+     "on-surface-alt": "rgb(248, 250, 252)",
+     "on-warning": "rgb(40, 17, 0)",
+     "outlined": "rgb(100, 116, 139)",
+     "overlay": "rgb(71, 85, 105)",
+     "primary": "rgb(125, 211, 252)",
+     "raised": "rgb(51, 65, 85)",
+     "secondary": "rgb(186, 230, 253)",
+     "shadow-0": "rgba(255, 255, 255, 0)",
+     "shadow-10": "rgba(255, 255, 255, 0.1)",
+     "shadow-15": "rgba(255, 255, 255, 0.15)",
+     "shadow-20": "rgba(255, 255, 255, 0.2)",
+     "shadow-25": "rgba(255, 255, 255, 0.25)",
+     "shadow-30": "rgba(255, 255, 255, 0.3)",
+     "shadow-5": "rgba(255, 255, 255, 0.05)",
+     "success": "rgb(134, 239, 172)",
+     "surface": "rgb(18, 18, 18)",
+     "surface-alt": "rgb(30, 41, 59)",
+     "text": "rgb(255, 255, 255)",
+     "transparent": "rgba(255, 255, 255, 0)",
+     "warning": "rgb(252, 211, 77)"
+    },
+    "chart": [
+     "color(srgb 0.566667 0.853333 0.99)",
+     "color(srgb 0.64 0.806667 0.993333)",
+     "color(srgb 0.596667 0.946667 0.723333)",
+     "color(srgb 0.99 0.7 0.7)",
+     "color(srgb 0.99 0.853333 0.406667)",
+     "color(srgb 0.826667 0.86 0.9)"
+    ],
+    "elevations": [
+     {
+      "name": "0",
+      "shadow": "rgba(255, 255, 255, 0) 0px 0px 0px 0px"
+     },
+     {
+      "name": "1",
+      "shadow": "rgba(255, 255, 255, 0.05) 0px 1px 2px 0px"
+     },
+     {
+      "name": "2",
+      "shadow": "rgba(255, 255, 255, 0.1) 0px 2px 4px 0px"
+     },
+     {
+      "name": "3",
+      "shadow": "rgba(255, 255, 255, 0.15) 0px 3px 8px 0px"
+     },
+     {
+      "name": "4",
+      "shadow": "rgba(255, 255, 255, 0.2) 0px 4px 12px 0px"
+     },
+     {
+      "name": "5",
+      "shadow": "rgba(255, 255, 255, 0.2) 0px 6px 16px 0px"
+     },
+     {
+      "name": "6",
+      "shadow": "rgba(255, 255, 255, 0.25) 0px 8px 24px -1px"
+     },
+     {
+      "name": "7",
+      "shadow": "rgba(255, 255, 255, 0.25) 0px 12px 32px -2px"
+     },
+     {
+      "name": "8",
+      "shadow": "rgba(255, 255, 255, 0.3) 0px 16px 40px -4px"
+     }
+    ]
+   },
+   "dark-hc": {
+    "roles": {
+     "disabled": "rgb(158, 158, 158)",
+     "error": "rgb(252, 165, 165)",
+     "info": "rgb(147, 197, 253)",
+     "muted": "rgb(241, 245, 249)",
+     "on-disabled": "rgb(241, 245, 249)",
+     "on-error": "rgb(0, 0, 0)",
+     "on-info": "rgb(0, 0, 0)",
+     "on-overlay": "rgb(255, 255, 255)",
+     "on-primary": "rgb(0, 0, 0)",
+     "on-raised": "rgb(255, 255, 255)",
+     "on-secondary": "rgb(0, 0, 0)",
+     "on-success": "rgb(0, 0, 0)",
+     "on-surface": "rgb(255, 255, 255)",
+     "on-surface-alt": "rgb(255, 255, 255)",
+     "on-warning": "rgb(0, 0, 0)",
+     "outlined": "rgb(203, 213, 225)",
+     "overlay": "rgb(51, 65, 85)",
+     "primary": "rgb(125, 211, 252)",
+     "raised": "rgb(30, 41, 59)",
+     "secondary": "rgb(186, 230, 253)",
+     "shadow-0": "rgba(255, 255, 255, 0)",
+     "shadow-10": "rgba(255, 255, 255, 0.1)",
+     "shadow-15": "rgba(255, 255, 255, 0.15)",
+     "shadow-20": "rgba(255, 255, 255, 0.2)",
+     "shadow-25": "rgba(255, 255, 255, 0.25)",
+     "shadow-30": "rgba(255, 255, 255, 0.3)",
+     "shadow-5": "rgba(255, 255, 255, 0.05)",
+     "success": "rgb(134, 239, 172)",
+     "surface": "rgb(0, 0, 0)",
+     "surface-alt": "rgb(18, 18, 18)",
+     "text": "rgb(255, 255, 255)",
+     "transparent": "rgba(255, 255, 255, 0)",
+     "warning": "rgb(252, 211, 77)"
+    },
+    "chart": [
+     "color(srgb 0.566667 0.853333 0.99)",
+     "color(srgb 0.64 0.806667 0.993333)",
+     "color(srgb 0.596667 0.946667 0.723333)",
+     "color(srgb 0.99 0.7 0.7)",
+     "color(srgb 0.99 0.853333 0.406667)",
+     "color(srgb 0.953333 0.966667 0.98)"
+    ],
+    "elevations": [
+     {
+      "name": "0",
+      "shadow": "rgba(255, 255, 255, 0) 0px 0px 0px 0px"
+     },
+     {
+      "name": "1",
+      "shadow": "rgba(255, 255, 255, 0.05) 0px 1px 2px 0px"
+     },
+     {
+      "name": "2",
+      "shadow": "rgba(255, 255, 255, 0.1) 0px 2px 4px 0px"
+     },
+     {
+      "name": "3",
+      "shadow": "rgba(255, 255, 255, 0.15) 0px 3px 8px 0px"
+     },
+     {
+      "name": "4",
+      "shadow": "rgba(255, 255, 255, 0.2) 0px 4px 12px 0px"
+     },
+     {
+      "name": "5",
+      "shadow": "rgba(255, 255, 255, 0.2) 0px 6px 16px 0px"
+     },
+     {
+      "name": "6",
+      "shadow": "rgba(255, 255, 255, 0.25) 0px 8px 24px -1px"
+     },
+     {
+      "name": "7",
+      "shadow": "rgba(255, 255, 255, 0.25) 0px 12px 32px -2px"
+     },
+     {
+      "name": "8",
+      "shadow": "rgba(255, 255, 255, 0.3) 0px 16px 40px -4px"
+     }
+    ]
+   },
+   "light": {
+    "roles": {
+     "disabled": "rgb(224, 224, 224)",
+     "error": "rgb(231, 80, 76)",
+     "info": "rgb(59, 130, 246)",
+     "muted": "rgb(71, 85, 105)",
+     "on-disabled": "rgb(100, 116, 139)",
+     "on-error": "rgb(255, 255, 255)",
+     "on-info": "rgb(255, 255, 255)",
+     "on-overlay": "rgb(18, 18, 18)",
+     "on-primary": "rgb(255, 255, 255)",
+     "on-raised": "rgb(18, 18, 18)",
+     "on-secondary": "rgb(255, 255, 255)",
+     "on-success": "rgb(255, 255, 255)",
+     "on-surface": "rgb(18, 18, 18)",
+     "on-surface-alt": "rgb(18, 18, 18)",
+     "on-warning": "rgb(255, 255, 255)",
+     "outlined": "rgb(100, 116, 139)",
+     "overlay": "rgb(203, 213, 225)",
+     "primary": "rgb(4, 109, 182)",
+     "raised": "rgb(226, 232, 240)",
+     "secondary": "rgb(24, 72, 101)",
+     "shadow-0": "rgba(0, 0, 0, 0)",
+     "shadow-10": "rgba(0, 0, 0, 0.1)",
+     "shadow-15": "rgba(0, 0, 0, 0.15)",
+     "shadow-20": "rgba(0, 0, 0, 0.2)",
+     "shadow-25": "rgba(0, 0, 0, 0.25)",
+     "shadow-30": "rgba(0, 0, 0, 0.3)",
+     "shadow-5": "rgba(0, 0, 0, 0.05)",
+     "success": "rgb(22, 163, 74)",
+     "surface": "rgb(255, 255, 255)",
+     "surface-alt": "rgb(241, 245, 249)",
+     "text": "rgb(0, 0, 0)",
+     "transparent": "rgba(255, 255, 255, 0)",
+     "warning": "rgb(217, 119, 6)"
+    },
+    "chart": [
+     "color(srgb 0.0133333 0.363333 0.606667)",
+     "color(srgb 0.196667 0.433333 0.82)",
+     "color(srgb 0.0733333 0.543333 0.246667)",
+     "color(srgb 0.77 0.266667 0.253333)",
+     "color(srgb 0.723333 0.396667 0.02)",
+     "color(srgb 0.236667 0.283333 0.35)"
+    ],
+    "elevations": [
+     {
+      "name": "0",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+     },
+     {
+      "name": "1",
+      "shadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+     },
+     {
+      "name": "2",
+      "shadow": "rgba(0, 0, 0, 0.1) 0px 2px 4px 0px"
+     },
+     {
+      "name": "3",
+      "shadow": "rgba(0, 0, 0, 0.15) 0px 3px 8px 0px"
+     },
+     {
+      "name": "4",
+      "shadow": "rgba(0, 0, 0, 0.2) 0px 4px 12px 0px"
+     },
+     {
+      "name": "5",
+      "shadow": "rgba(0, 0, 0, 0.2) 0px 6px 16px 0px"
+     },
+     {
+      "name": "6",
+      "shadow": "rgba(0, 0, 0, 0.25) 0px 8px 24px -1px"
+     },
+     {
+      "name": "7",
+      "shadow": "rgba(0, 0, 0, 0.25) 0px 12px 32px -2px"
+     },
+     {
+      "name": "8",
+      "shadow": "rgba(0, 0, 0, 0.3) 0px 16px 40px -4px"
+     }
+    ]
+   },
+   "light-hc": {
+    "roles": {
+     "disabled": "rgb(97, 97, 97)",
+     "error": "rgb(185, 28, 28)",
+     "info": "rgb(37, 99, 235)",
+     "muted": "rgb(30, 41, 59)",
+     "on-disabled": "rgb(15, 23, 42)",
+     "on-error": "rgb(255, 255, 255)",
+     "on-info": "rgb(255, 255, 255)",
+     "on-overlay": "rgb(0, 0, 0)",
+     "on-primary": "rgb(255, 255, 255)",
+     "on-raised": "rgb(0, 0, 0)",
+     "on-secondary": "rgb(255, 255, 255)",
+     "on-success": "rgb(255, 255, 255)",
+     "on-surface": "rgb(0, 0, 0)",
+     "on-surface-alt": "rgb(0, 0, 0)",
+     "on-warning": "rgb(255, 255, 255)",
+     "outlined": "rgb(30, 41, 59)",
+     "overlay": "rgb(148, 163, 184)",
+     "primary": "rgb(7, 89, 133)",
+     "raised": "rgb(203, 213, 225)",
+     "secondary": "rgb(24, 72, 101)",
+     "shadow-0": "rgba(0, 0, 0, 0)",
+     "shadow-10": "rgba(0, 0, 0, 0.1)",
+     "shadow-15": "rgba(0, 0, 0, 0.15)",
+     "shadow-20": "rgba(0, 0, 0, 0.2)",
+     "shadow-25": "rgba(0, 0, 0, 0.25)",
+     "shadow-30": "rgba(0, 0, 0, 0.3)",
+     "shadow-5": "rgba(0, 0, 0, 0.05)",
+     "success": "rgb(21, 128, 61)",
+     "surface": "rgb(255, 255, 255)",
+     "surface-alt": "rgb(226, 232, 240)",
+     "text": "rgb(0, 0, 0)",
+     "transparent": "rgba(255, 255, 255, 0)",
+     "warning": "rgb(180, 83, 9)"
+    },
+    "chart": [
+     "color(srgb 0.0233333 0.296667 0.443333)",
+     "color(srgb 0.123333 0.33 0.783333)",
+     "color(srgb 0.07 0.426667 0.203333)",
+     "color(srgb 0.616667 0.0933333 0.0933333)",
+     "color(srgb 0.6 0.276667 0.03)",
+     "color(srgb 0.1 0.136667 0.196667)"
+    ],
+    "elevations": [
+     {
+      "name": "0",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+     },
+     {
+      "name": "1",
+      "shadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+     },
+     {
+      "name": "2",
+      "shadow": "rgba(0, 0, 0, 0.1) 0px 2px 4px 0px"
+     },
+     {
+      "name": "3",
+      "shadow": "rgba(0, 0, 0, 0.15) 0px 3px 8px 0px"
+     },
+     {
+      "name": "4",
+      "shadow": "rgba(0, 0, 0, 0.2) 0px 4px 12px 0px"
+     },
+     {
+      "name": "5",
+      "shadow": "rgba(0, 0, 0, 0.2) 0px 6px 16px 0px"
+     },
+     {
+      "name": "6",
+      "shadow": "rgba(0, 0, 0, 0.25) 0px 8px 24px -1px"
+     },
+     {
+      "name": "7",
+      "shadow": "rgba(0, 0, 0, 0.25) 0px 12px 32px -2px"
+     },
+     {
+      "name": "8",
+      "shadow": "rgba(0, 0, 0, 0.3) 0px 16px 40px -4px"
+     }
+    ]
+   }
+  }
+ },
+ "types": [
+  {
+   "name": "h1",
+   "size": 64,
+   "line": 72
+  },
+  {
+   "name": "h2",
+   "size": 48,
+   "line": 56
+  },
+  {
+   "name": "h3",
+   "size": 40,
+   "line": 48
+  },
+  {
+   "name": "h4",
+   "size": 32,
+   "line": 40
+  },
+  {
+   "name": "h5",
+   "size": 24,
+   "line": 32
+  },
+  {
+   "name": "h6",
+   "size": 20,
+   "line": 28
+  },
+  {
+   "name": "l1",
+   "size": 20,
+   "line": 24
+  },
+  {
+   "name": "l2",
+   "size": 18,
+   "line": 22
+  },
+  {
+   "name": "l3",
+   "size": 16,
+   "line": 20
+  },
+  {
+   "name": "l4",
+   "size": 14,
+   "line": 18
+  },
+  {
+   "name": "l5",
+   "size": 12,
+   "line": 16
+  },
+  {
+   "name": "l6",
+   "size": 11,
+   "line": 14
+  },
+  {
+   "name": "l7",
+   "size": 10,
+   "line": 12
+  },
+  {
+   "name": "p1",
+   "size": 18,
+   "line": 28
+  },
+  {
+   "name": "p2",
+   "size": 16,
+   "line": 24
+  },
+  {
+   "name": "p3",
+   "size": 14,
+   "line": 20
+  }
+ ],
+ "shapes": [
+  {
+   "name": "none",
+   "radius": 0
+  },
+  {
+   "name": "soft",
+   "radius": 4
+  },
+  {
+   "name": "smooth",
+   "radius": 8
+  },
+  {
+   "name": "pill",
+   "radius": 999
+  }
+ ],
+ "families": [
+  "Inter",
+  "JetBrains Mono"
+ ],
+ "iconFamilies": [
+  "Font Awesome 6 Free",
+  "Font Awesome 7 Duotone",
+  "Font Awesome 7 Pro",
+  "Font Awesome 7 Sharp",
+  "Font Awesome 7 Sharp Duotone"
+ ]
+}

@@ -1,0 +1,5 @@
+[
+  { "name": "page", "url": "" },
+  { "name": "return-dialog", "url": "", "click": ["Return item"] },
+  { "name": "privacy", "url": "Privacy" }
+]

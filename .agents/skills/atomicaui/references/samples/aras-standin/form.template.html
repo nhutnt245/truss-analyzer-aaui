@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- form.template.html: a stand-in for a document the host owns (a classic form, a custom page). No Aras data, no sign-in.
+     The host has its own old stylesheet, a root font size that is not 16 px, element rules and !important.
+     Our part of it is one area. Only that area carries the AtomicAUI identity attributes; the host's root is left alone.
+     The stylesheet for a document we do not own is aui/aui-px.css: the same rules in pixels, so the host's root size cannot shrink them. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Host form (stand-in)</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="legacy.css">
+  </head>
+  <body>
+    <table class="host-form" role="presentation">
+      <tr>
+        <td class="host-label">Part Number</td>
+        <td><input class="host-input" name="item_number" value="P-1001"></td>
+        <td class="host-label">Revision</td>
+        <td><input class="host-input" name="major_rev" value="A"></td>
+      </tr>
+      <tr>
+        <td class="host-label">Name</td>
+        <td colspan="3"><input class="host-input host-wide" name="name" value="Mounting Bracket"></td>
+      </tr>
+    </table>
+    <div class="host-toolbar">
+      <button class="host-button" id="host-before">Host Save</button>
+    </div>
+    <!-- Our area. A client method run on the form's load event (form-onload.js) loads the stylesheet and the behaviour script. -->
+    <div id="aui-area" data-aui-brand="atomic" data-aui-theme="light" data-aui-typeface="engineering" data-aui-typography="body">
+<!-- AUI-AREA -->
+    </div>
+    <div class="host-toolbar">
+      <button class="host-button" id="host-after">Host Close</button>
+    </div>
+    <script src="form-onload.js"></script>
+  </body>
+</html>

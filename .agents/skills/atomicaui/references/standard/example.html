@@ -1,0 +1,133 @@
+<!doctype html>
+<!-- AtomicAUI with no React: one small screen put together from the class recipes in recipes/.
+     Every class list is copied whole from a recipe. aui/aui-behaviour.js gives the tabs their behaviour; the script
+     at the end is this page's own, written from the "You add" line of the table recipe. Checked by `npm run check:standard`. -->
+<html lang="en" data-aui-brand="atomic" data-aui-theme="light" data-aui-typeface="engineering" data-aui-typography="body">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part P-1001</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="aui/aui.css">
+    <link rel="stylesheet" href="aui/aui-setup.css">
+    <script src="aui/aui-theme.js"></script>
+    <script src="aui/aui-behaviour.js"></script>
+    <script src="https://kit.fontawesome.com/c852ddbb54.js" crossorigin="anonymous"></script>
+    <style>
+      /* why: a page of panes fills the window, so the panes grow with it and keep 4 px above and below. */
+      html, body { height: 100%; }
+      /* why: the page frame (flex-fill) takes the height of the body. */
+      body { display: flex; flex-direction: column; }
+    </style>
+  </head>
+  <body>
+<div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0 aui-min-height-0 aui-display-flex aui-flex-direction-row aui-flex-fill aui-overflow-hidden" data-aui-panes="page">
+  <div class="aui-view aui-frame aui-scale-block-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-fixed-surface-alt aui-frame--inset aui-elevation-0 aui-gap-0 aui-min-width-0 aui-min-height-0 aui-display-flex aui-flex-direction-column aui-flex-fill" data-aui-pane="part">
+    <div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-height-28 aui-display-flex aui-align-items-center aui-flex-none" data-aui-pane-header>
+      <h2 class="aui-frame aui-scale-no-padding-sm aui-bg-transparent aui-typography-style-semi-bold aui-flex-fill aui-margin-0 aui-typography-typescale-l3" data-aui-typeface="engineering" data-aui-typography="body">Part P-1001</h2>
+    </div>
+    <div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-width-fill aui-min-height-0 aui-display-flex aui-flex-fill">
+    <div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface aui-elevation-0 aui-gap-0 aui-width-fill aui-min-height-0 aui-display-flex aui-flex-direction-column aui-flex-fill aui-overflow-hidden" data-aui-pane-body="fill">
+    <div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-gap-8 aui-width-fill aui-display-flex aui-flex-direction-column">
+      <div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-gap-8 aui-display-flex aui-align-items-center aui-flex-none" aria-label="Part actions" role="group">
+        <button type="button" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0">Cancel</button>
+        <button type="button" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-secondary aui-elevation-0">Save</button>
+        <button data-aui-theme-toggle type="button" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0">Light or dark</button>
+      </div>
+      <div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-gap-8 aui-width-fill aui-display-flex aui-flex-direction-column">
+        <h1 class="aui-frame aui-scale-no-padding-sm aui-bg-transparent aui-typography-style-semi-bold aui-margin-0 aui-typography-typescale-l3" data-aui-typeface="engineering" data-aui-typography="body">Mounting Bracket</h1>
+        <div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-gap-8 aui-display-flex aui-align-items-center aui-flex-wrap-wrap">
+          <div class="aui-field aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0" data-filled>
+            <label id="name-label" for="name" class="aui-field-label aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface" data-filled>Name</label>
+            <div class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-field-control aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-fixed-surface aui-frame--inset aui-elevation-0" data-aui-filled>
+              <input id="name" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-input aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0" value="Mounting Bracket" name="name" data-filled aria-labelledby="name-label">
+            </div>
+          </div>
+          <div class="aui-field aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0" data-filled>
+            <label id="number-label" for="number" class="aui-field-label aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface" data-filled>Number</label>
+            <div class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-field-control aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-fixed-surface aui-frame--inset aui-elevation-0" data-aui-filled>
+              <input id="number" readonly class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-input aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0" value="P-1001" name="number" data-filled aria-labelledby="number-label">
+            </div>
+          </div>
+        </div>
+        <div data-orientation="horizontal" class="aui-tabs aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none">
+          <div data-orientation="horizontal" role="tablist" class="aui-tabs-list aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0">
+            <button type="button" data-active data-orientation="horizontal" aria-disabled="false" role="tab" aria-selected="true" id="tab-bom" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-tabs-tab aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-overlay aui-elevation-0" aria-controls="panel-bom">BOM</button>
+            <button type="button" data-orientation="horizontal" aria-disabled="false" tabindex="-1" role="tab" aria-selected="false" id="tab-documents" aria-controls="panel-documents" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-tabs-tab aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0">Documents</button>
+          </div>
+          <div data-orientation="horizontal" id="panel-bom" role="tabpanel" tabindex="0" class="aui-tabs-panel aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface" aria-labelledby="tab-bom">
+            <div aria-label="BOM" class="aui-table aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0 aui-border-color-outlined aui-border-block-start-width-1 aui-border-block-end-width-1 aui-border-inline-start-width-1 aui-border-inline-end-width-1 aui-gap-0 aui-min-height-0" role="grid" data-aui-border="all-cells" data-aui-border-style="tonal" data-aui-hoverable="true" data-aui-hover-target="row" data-aui-selection-target="row" data-aui-a11y="grid" data-aui-fit="fill" data-aui-scroll="self" data-aui-body-fit="content" style="--aui-scrollbar-size: var(--p-px-8)">
+              <div role="presentation" class="aui-view-scroll-area aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-display-flex aui-flex-direction-column aui-table-scroll-region" style="--aui-scrollbar-size: var(--p-px-8)">
+                <div role="presentation" tabindex="-1" class="aui-view-scroll-area-viewport">
+                  <table class="aui-table-scroll-body" role="presentation">
+                    <tbody role="rowgroup" class="aui-table-body">
+                      <tr class="aui-table-row aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0" role="row" data-aui-table-row aria-selected="false">
+                        <td role="gridcell" data-aui-table-cell class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-left">P-1001</td>
+                        <td role="gridcell" data-aui-table-cell class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-center">Mounting Bracket</td>
+                      </tr>
+                      <tr class="aui-table-row aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0 aui-border-color-secondary aui-border-inline-start-width-4" role="row" data-aui-table-row data-selected aria-selected="true">
+                        <td role="gridcell" data-aui-table-cell class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-left">P-1002</td>
+                        <td role="gridcell" data-aui-table-cell class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-center">Hex Bolt M8</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div data-orientation="horizontal" id="panel-documents" role="tabpanel" tabindex="0" class="aui-tabs-panel aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-display-none" aria-labelledby="tab-documents">
+            <div aria-label="Documents" class="aui-table aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0 aui-border-color-outlined aui-border-block-start-width-1 aui-border-block-end-width-1 aui-border-inline-start-width-1 aui-border-inline-end-width-1 aui-gap-0 aui-min-height-0" role="table" data-aui-border="all-cells" data-aui-border-style="tonal" data-aui-selection-target="none" data-aui-a11y="table" data-aui-fit="fill" data-aui-scroll="self" data-aui-body-fit="content" style="--aui-scrollbar-size: var(--p-px-8)">
+              <table class="aui-table-scroll-fixed aui-table-scroll-header" role="presentation">
+                <thead role="rowgroup" class="aui-table-head">
+                  <tr data-aui-header-row="true" class="aui-table-row aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0" role="row" data-aui-table-row>
+                    <th scope="col" role="columnheader" data-aui-table-cell-painted class="aui-table-header-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-raised aui-elevation-0 aui-text-align-left">Number</th>
+                    <th scope="col" role="columnheader" data-aui-table-cell-painted class="aui-table-header-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-raised aui-elevation-0 aui-text-align-center">Name</th>
+                  </tr>
+                </thead>
+              </table>
+              <div role="presentation" class="aui-view-scroll-area aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-display-flex aui-flex-direction-column aui-table-scroll-region" style="--aui-scrollbar-size: var(--p-px-8)">
+                <div role="presentation" tabindex="-1" class="aui-view-scroll-area-viewport">
+                  <table class="aui-table-scroll-body" role="presentation">
+                    <colgroup data-aui-table-column-lock>
+                      <col></col>
+                      <col></col>
+                    </colgroup>
+                    <tbody role="rowgroup" class="aui-table-body">
+                      <tr class="aui-table-row aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0" role="row" data-aui-table-row>
+                        <td role="cell" class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-left">D-2001</td>
+                        <td role="cell" class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-center">Bracket drawing</td>
+                      </tr>
+                      <tr class="aui-table-row aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0" role="row" data-aui-table-row>
+                        <td role="cell" class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-left">D-2002</td>
+                        <td role="cell" class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-center">Assembly note</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+    </div>
+</div>
+</div>
+    <script>
+      // Table: the picked row takes the selected row's class list and attributes, the others the first row's.
+      const rows = [...document.querySelectorAll('[data-aui-selection-target="row"] tbody tr')];
+      const [plainClasses, selectedClasses] = rows.map((row) => row.className);
+      for (const row of rows) {
+        row.addEventListener('click', () => {
+          for (const other of rows) {
+            const on = other === row;
+            other.className = on ? selectedClasses : plainClasses;
+            other.toggleAttribute('data-selected', on);
+            other.setAttribute('aria-selected', String(on));
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

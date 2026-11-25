@@ -1,0 +1,24 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Part P-1001";
+}
+@* Every class list on this page is copied whole from a class recipe (standard/recipes/). The three parts are partial views. *@
+<div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0 aui-gap-16 aui-width-fill aui-display-flex aui-flex-direction-column">
+  <button type="button" data-aui-theme-toggle class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0">Light or dark</button>
+  <form method="post" class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-gap-8 aui-width-256 aui-display-flex aui-flex-direction-column">
+    <partial name="_AuiSelect" model="Model.StateSelect" />
+    <button type="submit" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-secondary aui-elevation-0">Save</button>
+    @if (Model.Saved is not null)
+    {
+      <span class="aui-frame aui-scale-no-padding-sm aui-bg-transparent" data-aui-typeface="engineering" data-aui-typography="body">Saved state: @Model.Saved</span>
+    }
+  </form>
+  <div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-width-256">
+    <partial name="_AuiDialog" model="Model.PromoteDialog" />
+  </div>
+  <div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-width-256">
+    <partial name="_AuiTabs" model="Model.PartTabs" />
+  </div>
+  <button type="button" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0">After</button>
+</div>

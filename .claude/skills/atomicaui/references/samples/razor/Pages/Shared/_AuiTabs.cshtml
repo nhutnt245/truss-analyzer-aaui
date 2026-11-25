@@ -1,0 +1,35 @@
+@* Generated from the AtomicAUI class recipes by the kit (scripts/samples-build.mjs). Copy it into your app; change what it is given, never a class list (AUI-09). *@
+@model AuiRazor.Models.AuiTabs
+<div data-orientation="horizontal" class="aui-tabs aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none">
+<div data-orientation="horizontal" role="tablist" class="aui-tabs-list aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0">
+@for (var index = 0; index < Model.Tabs.Count; index++)
+{
+    if (index == Model.Selected)
+    {
+        <button type="button" data-active data-orientation="horizontal" aria-disabled="false" role="tab" aria-selected="true" id="@(Model.Id)-tab-@index" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-tabs-tab aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-overlay aui-elevation-0" aria-controls="@(Model.Id)-panel-@index">@Model.Tabs[index].Name</button>
+    }
+    else
+    {
+        <button type="button" data-orientation="horizontal" aria-disabled="false" tabindex="-1" role="tab" aria-selected="false" id="@(Model.Id)-tab-@index" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-tabs-tab aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0" aria-controls="@(Model.Id)-panel-@index">@Model.Tabs[index].Name</button>
+    }
+}
+</div>
+
+
+
+@for (var index = 0; index < Model.Tabs.Count; index++)
+{
+    if (index == Model.Selected)
+    {
+        <div data-orientation="horizontal" id="@(Model.Id)-panel-@index" role="tabpanel" tabindex="0" class="aui-tabs-panel aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface" aria-labelledby="@(Model.Id)-tab-@index">
+            <span class="aui-frame aui-scale-no-padding-sm aui-bg-transparent" data-aui-typeface="engineering" data-aui-typography="body">@Model.Tabs[index].Content</span>
+          </div>
+    }
+    else
+    {
+        <div data-orientation="horizontal" id="@(Model.Id)-panel-@index" role="tabpanel" tabindex="0" class="aui-tabs-panel aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-display-none" aria-labelledby="@(Model.Id)-tab-@index">
+            <span class="aui-frame aui-scale-no-padding-sm aui-bg-transparent" data-aui-typeface="engineering" data-aui-typography="body">@Model.Tabs[index].Content</span>
+          </div>
+    }
+}
+</div>

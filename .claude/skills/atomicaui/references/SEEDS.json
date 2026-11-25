@@ -1,0 +1,14 @@
+{
+ "note": "Hashes of the general starter files that a pack replaces. npm run pack:use overwrites a file only while its hash is the one here.",
+ "files": {
+  "evidence.views.json": "6402e4d48b0e946044390c2210db735f13ea06d1dae32ed181a5a424eadf5e8c",
+  "src/app/App.test.tsx": "776acf15077f4469d2300821d0d5620f0d6e4da6f7d80d6ed57a70f398d0f63e",
+  "src/app/App.tsx": "052c60e54a1ee498eb475ae8426c69cb3a3de042fb3b0263ad3da41b0bdd0a03",
+  "src/app/Screen.tsx": "0b249ef628bec2264f2e689883f954b6d3d06d43f1f31a95d8ed31bf707e5a2c",
+  "src/app/route.test.ts": "39a7aeaa7ce1e1b243c17145c6548545c64210ffd9662367c7c8294222380014",
+  "src/app/route.ts": "158b0cd13c46d431cea474ad21333ad98b5ab429d92f8de45ac8dbb31efdca17",
+  "src/data/index.ts": null,
+  "src/main.tsx": "0b7b023c4c752b0d36410ee5afac430d0070bd4234934daf21f289c7ff0ef0d7",
+  "src/screens/index.ts": "06f59dcad716fd4562bf6c856db5f1083a086ac9eaffae16b24c85eb4791f8da"
+ }
+}

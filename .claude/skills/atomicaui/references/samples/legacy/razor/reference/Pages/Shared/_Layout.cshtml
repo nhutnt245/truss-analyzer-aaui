@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+@* The AtomicAUI page setup (kit/standard/start.md), once for every page: four attributes, two stylesheets, the theme and behaviour scripts, the icon kit. *@
+<html lang="en" data-aui-brand="atomic" data-aui-theme="light" data-aui-typeface="engineering" data-aui-typography="body">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Loans desk</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="~/aui/aui.css" />
+    <link rel="stylesheet" href="~/aui/aui-setup.css" />
+    <link rel="stylesheet" href="~/lib/tinychart/tinychart.css" />
+    <link rel="stylesheet" href="~/aui-align.css" />
+    <script src="~/aui/aui-theme.js"></script>
+    <script src="~/aui/aui-behaviour.js"></script>
+    <script src="https://kit.fontawesome.com/c852ddbb54.js" crossorigin="anonymous"></script>
+    <style>
+        /* why: a page of panes fills the window, so the panes grow with it and keep 4 px above and below. */
+        html, body { height: 100%; }
+        /* why: the page frame (flex-fill) takes the height of the body. */
+        body { display: flex; flex-direction: column; }
+    </style>
+</head>
+<body>
+<div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface-alt aui-elevation-0 aui-gap-8 aui-display-flex aui-align-items-center aui-flex-none aui-flex-none" aria-label="Loans desk" role="group">
+  <a asp-area="" asp-page="/Index" role="link" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-text-raised aui-elevation-0 aui-text-decoration-none">Loans desk</a>
+  <a asp-area="" asp-page="/Index" role="link" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-text-raised aui-elevation-0 aui-text-decoration-none">Home</a>
+  <a asp-area="" asp-page="/Privacy" role="link" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-text-raised aui-elevation-0 aui-text-decoration-none">Privacy</a>
+  <span class="aui-frame aui-scale-no-padding-sm aui-bg-transparent aui-margin-0 aui-flex-fill aui-text-align-end" data-aui-typeface="engineering" data-aui-typography="body">&copy; 2026 - Loans desk</span>
+</div>
+@RenderBody()
+    <script src="~/lib/tinychart/tinychart.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

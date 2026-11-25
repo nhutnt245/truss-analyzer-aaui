@@ -1,0 +1,11 @@
+{
+  "app": [
+    "src/**/*.{test,spec}.{ts,tsx}",
+    "scripts/gallery-views.test.mjs"
+  ],
+  "kit": [
+    "kit/samples/legacy/react/reference/**/*.test.tsx",
+    "scripts/**/*.test.mjs",
+    "evals/**/*.test.mjs"
+  ]
+}

@@ -1,0 +1,18 @@
+<!doctype html>
+@* The AtomicAUI page setup (standard/start.md), once for every page: four attributes, two stylesheets, the theme and behaviour scripts, the icon kit. *@
+<html lang="en" data-aui-brand="atomic" data-aui-theme="light" data-aui-typeface="engineering" data-aui-typography="body">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="~/aui/aui.css">
+    <link rel="stylesheet" href="~/aui/aui-setup.css">
+    <script src="~/aui/aui-theme.js"></script>
+    <script src="~/aui/aui-behaviour.js"></script>
+    <script src="https://kit.fontawesome.com/c852ddbb54.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    @RenderBody()
+  </body>
+</html>

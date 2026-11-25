@@ -1,0 +1,9 @@
+[
+  { "name": "aras-search", "url": "#/pack/aras/search/Part" },
+  { "name": "aras-search-selected", "url": "#/pack/aras/search/Part", "click": ["Select P-1003"], "rows": ["Part search"] },
+  { "name": "aras-item", "url": "#/pack/aras/item/Part/P-1001" },
+  { "name": "aras-item-edit", "url": "#/pack/aras/item/Part/P-1001", "click": ["Edit"], "rows": ["Part actions"] },
+  { "name": "aras-gallery", "url": "#/pack/aras/gallery" },
+  { "name": "aras-gallery-tree", "url": "#/pack/aras/gallery", "click": ["Tree", "Toggle P-1001 Mounting Bracket"] },
+  { "name": "aras-gallery-styled", "url": "#/pack/aras/gallery", "click": ["Banner and styled pieces", "Brace"] }
+]

@@ -1,0 +1,71 @@
+@page
+@model IndexModel
+@using LegacyRazor.Models
+@{
+    ViewData["Title"] = "Equipment loans";
+}
+<div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0 aui-min-height-0 aui-display-flex aui-flex-direction-row aui-flex-fill aui-overflow-hidden" data-aui-panes="page under-bar">
+  <div class="aui-view aui-frame aui-scale-block-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-fixed-surface-alt aui-frame--inset aui-elevation-0 aui-gap-0 aui-min-width-0 aui-min-height-0 aui-display-flex aui-flex-direction-column aui-flex-fill" data-aui-pane="equipment-loans">
+    <div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-padding-block-start-0 aui-padding-block-end-0 aui-min-height-28 aui-display-flex aui-flex-wrap-wrap aui-align-items-center aui-flex-none" data-aui-pane-header="">
+      <h2 class="aui-frame aui-scale-no-padding-sm aui-bg-transparent aui-typography-style-semi-bold aui-flex-auto aui-margin-0 aui-typography-typescale-l3" data-aui-typeface="engineering" data-aui-typography="body">Equipment loans</h2>
+      <div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-gap-6 aui-height-28 aui-display-flex aui-align-items-center aui-justify-content-end aui-flex-auto"><button type="button" id="new-loan" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-secondary aui-elevation-0">New loan</button><button type="button" id="return-item" data-disabled disabled data-aui-dialog-open="return-dialog" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-disabled aui-elevation-0">Return item</button></div>
+    </div>
+    <div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-width-fill aui-min-height-0 aui-display-flex aui-flex-fill">
+      <div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface aui-elevation-0 aui-gap-0 aui-width-fill aui-min-height-0 aui-display-flex aui-flex-direction-column aui-flex-fill aui-overflow-hidden" data-aui-pane-body="fill"><div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-gap-8 aui-width-fill aui-display-flex aui-flex-direction-column">
+<form id="search-form" method="get" class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-gap-8 aui-display-flex aui-align-items-end aui-flex-wrap-wrap">
+<div class="aui-field aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0 aui-gap-3">
+  <label id="q-label" for="q" class="aui-field-label aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface">Search</label>
+  <div class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-field-control aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-fixed-surface aui-frame--inset aui-elevation-0">
+    <input id="q" value="@Model.Q" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-input aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0" name="Q" aria-labelledby="q-label" placeholder="Item or borrower">
+  </div>
+</div>
+<div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-width-256">
+<partial name="_AuiSelect" model="Model.StatusSelect" />
+</div>
+<button type="submit" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0">Search</button>
+</form>
+<div role="status" aria-label="Two loans are overdue." data-aui-banner-color="warning" data-aui-banner-scale="sm" class="aui-banner aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-warning aui-elevation-0"><div class="aui-frame aui-scale-no-padding-sm aui-bg-transparent aui-margin-0 aui-typography-typescale-l4 aui-banner-description" data-aui-typeface="engineering" data-aui-typography="body">Two loans are overdue.</div></div>
+<div id="loans" aria-label="Loans" class="aui-table aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0 aui-border-color-outlined aui-border-block-start-width-1 aui-border-block-end-width-1 aui-border-inline-start-width-1 aui-border-inline-end-width-1 aui-gap-0 aui-min-height-0" role="grid" data-aui-border="all-cells" data-aui-border-style="tonal" data-aui-hoverable="true" data-aui-hover-target="row" data-aui-selection-target="row" data-aui-a11y="grid" data-aui-fit="fill" data-aui-scroll="self" data-aui-body-fit="content" data-aui-min-inline-size style="--aui-scrollbar-size: var(--p-px-8); --aui-table-min-inline-size: 512px">
+  <div class="aui-table-scroll-clip"><table class="aui-table-scroll-fixed aui-table-scroll-header" role="presentation"><thead role="rowgroup" class="aui-table-head"><tr data-aui-header-row="true" class="aui-table-row aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0" role="row" data-aui-table-row><th scope="col" role="columnheader" data-aui-table-cell-painted class="aui-table-header-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-raised aui-elevation-0 aui-text-align-left">Item</th><th scope="col" role="columnheader" data-aui-table-cell-painted class="aui-table-header-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-raised aui-elevation-0 aui-text-align-center">Borrower</th><th scope="col" role="columnheader" data-aui-table-cell-painted class="aui-table-header-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-raised aui-elevation-0 aui-text-align-center">Due</th><th scope="col" role="columnheader" data-aui-table-cell-painted class="aui-table-header-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-raised aui-elevation-0 aui-text-align-center">Status</th></tr></thead></table></div>
+  <div role="presentation" class="aui-view-scroll-area aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-display-flex aui-flex-direction-column aui-table-scroll-region" style="--aui-scrollbar-size: var(--p-px-8)"><div role="presentation" tabindex="-1" class="aui-view-scroll-area-viewport"><table class="aui-table-scroll-body" role="presentation"><colgroup data-aui-table-column-lock><col><col><col><col></colgroup><tbody role="rowgroup" class="aui-table-body">
+@foreach (var loan in Model.Rows)
+{
+<tr class="aui-table-row aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0" role="row" data-aui-table-row aria-selected="false" data-id="@loan.Id">
+<td role="gridcell" data-aui-table-cell class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-left">@loan.Item</td>
+<td role="gridcell" data-aui-table-cell class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-center">@loan.Borrower</td>
+<td role="gridcell" data-aui-table-cell class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-center">@loan.Due</td>
+<td role="gridcell" data-aui-table-cell class="aui-table-cell aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-text-align-center"><span class="@(loan.Status == "Open" ? "aui-chip aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-info aui-elevation-0 aui-gap-4" : loan.Status == "Overdue" ? "aui-chip aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-warning aui-elevation-0 aui-gap-4" : "aui-chip aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-success aui-elevation-0 aui-gap-4")"><span class="aui-frame aui-scale-no-padding-sm aui-bg-transparent aui-chip-label" data-aui-typeface="engineering" data-aui-typography="body">@loan.Status</span></span></td>
+</tr>
+}
+</tbody></table></div></div>
+</div>
+<p id="count" class="aui-frame aui-scale-no-padding-sm aui-bg-transparent aui-margin-0" data-aui-typeface="engineering" data-aui-typography="body">Showing @Model.Rows.Count of @Model.Total loans</p>
+<h2 class="aui-frame aui-scale-no-padding-sm aui-bg-transparent aui-typography-style-semi-bold aui-margin-0 aui-typography-typescale-l3" data-aui-typeface="engineering" data-aui-typography="body">Loans per week</h2>
+<div id="chart" data-aui-aligned="tinychart"></div>
+</div></div>
+    </div>
+  </div>
+</div>
+<div data-aui-dialog-layers="" hidden="">
+<div role="presentation" data-aui-typeface="engineering" data-aui-typography="body" class="aui-dialog-backdrop">
+</div>
+<div role="presentation" class="aui-dialog-viewport">
+<div id="return-dialog" role="dialog" tabindex="-1" data-aui-typeface="engineering" data-aui-typography="body" class="aui-dialog-popup aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface aui-elevation-4" aria-labelledby="return-title" aria-describedby="return-dialog-description">
+  <h2 id="return-title" class="aui-dialog-title aui-frame aui-typography-typescale-default aui-color-solid-surface-alt aui-scale-default-sm">Return this item?<div class="aui-dialog-spacer">
+</div>
+    <button type="button" aria-label="Close" class="aui-dialog-close aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-contained-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface-alt aui-elevation-0">
+      <span aria-hidden="true" class="aui-contained-icon aui-icon-lh-l3 aui-bg-transparent aui-min-width-0 aui-min-height-0 aui-padding-inline-start-0 aui-padding-inline-end-0 aui-padding-block-start-0 aui-padding-block-end-0 aui-gap-0 aui-shape-soft">
+        <i aria-hidden="true" class="aui-icon aui-icon-size-fallback-14 fa-duotone fa-xmark" data-aui-icon-family="fa-7-pro" data-aui-icon-style="duotone">
+</i>
+      </span>
+    </button>
+  </h2>
+  <p id="return-dialog-description" class="aui-dialog-description aui-frame aui-typography-typescale-default aui-scale-default-sm">The loan is closed and the item is back on the shelf.</p>
+  
+  <div data-align="end" class="aui-dialog-actions aui-frame aui-typography-typescale-default aui-scale-default-sm">
+<button type="button" class="aui-dialog-button aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0" id="return-cancel">Cancel</button>
+<button type="button" class="aui-dialog-button aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-secondary aui-elevation-0" id="return-confirm">Return</button>
+</div>
+</div>
+</div>
+</div>

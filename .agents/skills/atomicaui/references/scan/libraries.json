@@ -1,0 +1,69 @@
+{
+  "atomicaui": {
+    "name": "AtomicAUI",
+    "components": {
+      "Button": "button", "IconButton": "icon-button", "Icon": "icon", "ContainedIcon": "icon", "Type": "text", "Symbol": "text", "View": "box", "View.ScrollArea": "scroll-area",
+      "ScrollArea": "scroll-area", "ScrollAreaViewport": null, "ScrollAreaScrollbar": null, "ScrollAreaThumb": null, "ScrollAreaCorner": null,
+      "Table": "table", "Tabs": "tabs", "Tabs.CloseButton": "icon-button", "Dialog": "dialog", "DialogHandle": null, "AlertDialog": "confirm", "AlertDialogHandle": null,
+      "Input": "text-input", "Field": null, "Field.Input": "text-input", "Select": "select", "Field.Select": "select", "Combobox": "combobox", "Field.Combobox": "combobox",
+      "Autocomplete": "combobox", "Checkbox": "checkbox", "CheckboxGroup": "checkbox", "Radio": "radio", "RadioGroup": "radio", "Switch": "switch", "SwitchGroup": "switch",
+      "NumberField": "number-input", "Datepicker": "date-input", "Textarea": "textarea", "Field.Textarea": "textarea", "Label": "label", "Field.Label": "label", "Fieldset": "fieldset",
+      "Chip": "badge", "Card": "card", "CardGroup": "card", "Accordion": "accordion", "Collapsible": "collapsible", "Menubar": "menubar", "Menubar.Dropdown": "menu", "Dropdown": "menu",
+      "ContextMenu": "context-menu", "Popover": "popover", "Tooltip": "tooltip", "Toast": "toast", "Drawer": "drawer", "DrawerHandle": null, "Progress": "progress", "Spinner": "spinner",
+      "List": "list", "Avatar": "avatar", "AvatarGroup": "avatar-group", "ContainedImage": "image", "Carousel": "carousel", "Pagination": "pagination", "Slider": "slider", "Panels": "splitter", "Panel": null, "PanelsTrigger": null, "PanelsContent": null,
+      "PanelsResizeHandle": null, "PanelsSpacer": null, "PanelsIcon": null, "ToggleGroup": "toggle-buttons", "FileUpload": "file-input", "FileUploadDropzone": "file-input",
+      "SplashScreen": "box", "Banner": "banner", "ChartContainer": "chart", "ChartRenderer": "chart", "BarChart": "chart", "LineChart": "chart", "AreaChart": "chart",
+      "PieChart": "chart", "RadarChart": "chart", "TreeView": "tree", "AtomicAui": null, "AuiIdentityProvider": null, "IconographyProvider": null, "ScaleCascade": null
+    }
+  },
+  "devextreme-react": {
+    "name": "DevExtreme",
+    "components": {
+      "DataGrid": "data-grid", "TreeList": "tree-grid", "TreeView": "tree", "Button": "button", "DropDownButton": "button-menu", "ButtonGroup": "toggle-buttons",
+      "SelectBox": "select", "TagBox": "combobox", "Autocomplete": "combobox", "Lookup": "combobox", "DropDownBox": "combobox", "DateBox": "date-input", "Calendar": "date-input",
+      "NumberBox": "number-input", "TextBox": "text-input", "TextArea": "textarea", "CheckBox": "checkbox", "RadioGroup": "radio", "Switch": "switch", "Slider": "slider",
+      "RangeSlider": "slider", "ColorBox": "color-picker", "FileUploader": "file-input", "Popup": "dialog", "Popover": "popover", "Tooltip": "tooltip", "Toast": "toast",
+      "ContextMenu": "context-menu", "Menu": "menubar", "TabPanel": "tabs", "Tabs": "tabs", "Accordion": "accordion", "Drawer": "drawer", "Toolbar": "toolbar", "List": "list",
+      "LoadIndicator": "spinner", "LoadPanel": "spinner", "ProgressBar": "progress", "Scheduler": "scheduler", "HtmlEditor": "rich-text", "FilterBuilder": "filter-builder",
+      "Gallery": "carousel", "ScrollView": "scroll-area", "Sortable": "drag-and-drop", "Draggable": "drag-and-drop", "Resizable": "splitter", "Chart": "chart", "PieChart": "chart",
+      "FileManager": "file-manager", "Form": "form", "Validator": null, "ValidationGroup": null, "ValidationSummary": "banner"
+    },
+    "features": {
+      "Paging": "grid-paging", "Pager": "grid-paging", "FilterRow": "grid-filter-row", "SearchPanel": "grid-search", "Sorting": "grid-sorting", "Selection": "grid-selection",
+      "ColumnChooser": "grid-column-chooser", "Editing": "grid-cell-editing", "RowDragging": "grid-row-drag", "Grouping": "grid-grouping", "GroupPanel": "grid-grouping",
+      "Summary": "grid-summary", "Export": "grid-export", "MasterDetail": "grid-master-detail", "ColumnFixing": "grid-column-fixing", "HeaderFilter": "grid-header-filter"
+    },
+    "props": {
+      "allowColumnReordering": "grid-column-reorder", "allowColumnResizing": "grid-column-resize",
+      "filterRow": "grid-filter-row", "searchPanel": "grid-search", "paging": "grid-paging", "editing": "grid-cell-editing", "rowDragging": "grid-row-drag", "grouping": "grid-grouping",
+      "groupPanel": "grid-grouping", "columnChooser": "grid-column-chooser", "columnFixing": "grid-column-fixing", "headerFilter": "grid-header-filter", "selection": "grid-selection",
+      "sorting": "grid-sorting", "summary": "grid-summary", "export": "grid-export", "masterDetail": "grid-master-detail"
+    },
+    "settings": ["Column", "Item", "Label", "Position", "Animation", "Texts", "Format", "Scrolling", "StateStoring", "KeyboardNavigation", "RemoteOperations", "DropDownOptions", "Options", "ToolbarItem", "RequiredRule", "PatternRule", "EmailRule", "CustomRule", "StringLengthRule", "RangeRule", "Resource", "View"]
+  },
+  "devextreme": { "name": "DevExtreme", "calls": { "notify": "toast", "confirm": "confirm", "alert": "confirm", "custom": "dialog" } },
+  "sweetalert2": { "name": "SweetAlert2", "calls": { "fire": "confirm", "mixin": "confirm" } },
+  "react-router": { "name": "React Router", "components": { "Link": "link", "NavLink": "link" }, "any": null },
+  "react-router-dom": { "name": "React Router", "components": { "Link": "link", "NavLink": "link" }, "any": null },
+  "@react-three/fiber": { "name": "three.js", "components": { "Canvas": "canvas" }, "claims": ["Canvas"] },
+  "@react-three/drei": { "name": "three.js", "any": null },
+  "@dnd-kit/core": { "name": "dnd kit", "components": { "DndContext": "drag-and-drop" }, "any": null },
+  "@dnd-kit/sortable": { "name": "dnd kit", "components": { "SortableContext": "drag-and-drop" }, "any": null },
+  "react-resizable-panels": { "name": "react-resizable-panels", "components": { "PanelGroup": "splitter", "Group": "splitter" }, "any": null },
+  "@tanstack/react-table": { "name": "TanStack Table", "any": null },
+  "embla-carousel-react": { "name": "Embla", "any": "carousel" },
+  "react": { "name": "React", "any": null },
+  "react-redux": { "name": "React Redux", "any": null },
+  "lucide-react": { "name": "Lucide", "any": "icon" },
+  "@heroicons/react": { "name": "Heroicons", "any": "icon" },
+  "@phosphor-icons/react": { "name": "Phosphor", "components": { "IconContext": null, "Provider": null }, "any": "icon" },
+  "@tabler/icons-react": { "name": "Tabler", "any": "icon" },
+  "react-icons": { "name": "React Icons", "components": { "IconContext": null, "Provider": null }, "any": "icon" },
+  "renderers": ["@react-three/fiber", "@react-three/drei", "react-konva", "@react-pdf/renderer"],
+  "jqueryPlugins": {
+    "modal": "dialog", "datepicker": "date-input", "select2": "combobox", "DataTable": "data-grid", "dataTable": "data-grid", "tooltip": "tooltip", "popover": "popover",
+    "autocomplete": "combobox", "tabs": "tabs", "accordion": "accordion", "dialog": "dialog", "slider": "slider", "sortable": "drag-and-drop", "draggable": "drag-and-drop",
+    "droppable": "drag-and-drop", "dxDataGrid": "data-grid", "dxPopup": "dialog", "dxSelectBox": "select", "dxDateBox": "date-input", "dxButton": "button", "dxTextBox": "text-input",
+    "dxTreeView": "tree", "dxScheduler": "scheduler", "dxChart": "chart"
+  }
+}

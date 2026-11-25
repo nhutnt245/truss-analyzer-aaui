@@ -1,0 +1,67 @@
+{
+ "name": "aui-style-anything",
+ "version": "7.0.9-kit.0.4.2",
+ "atomicaui": "7.0.9",
+ "files": [
+  {
+   "path": "SKILL.md",
+   "sha256": "cf06872e286c31d612ed82d9eb6dddfba0fc5a772079fb526442fe222b98cc1d"
+  },
+  {
+   "path": "data/usage-profile.json",
+   "sha256": "bf72c45f494485ffef49accc45250be06b7e770de7e1a1ceed7a028f280c07c9"
+  },
+  {
+   "path": "references/access.md",
+   "sha256": "8a3631c7f79c949a46a77320a5dfb9b4395efc73f96bd1bc68abfaaab3be178a"
+  },
+  {
+   "path": "references/align.md",
+   "sha256": "1ad17362e3ddc694f7733031549ac81407d85c6975df409ededc8789e1e9a869"
+  },
+  {
+   "path": "references/examples/label-value-rows.md",
+   "sha256": "c914128269b95f34dfd1c3989df6bc02407eee7cb43ea337d9d8adf597405263"
+  },
+  {
+   "path": "references/examples/selection-cards.md",
+   "sha256": "110003af14a6f04fbbc8738b906fa8db2f8fa2cf2b95ca8a01f12db0fdbf787b"
+  },
+  {
+   "path": "references/forms.md",
+   "sha256": "b6154ae1e991eb60374d0fb48b6aeaba4cf4ee1c8ae7c31bf0499661a804d464"
+  },
+  {
+   "path": "references/maps/bootstrap.md",
+   "sha256": "3e24750fac6d397457ff2a27a0b0838ff9ad1e4d0dec0b33bb0cfa0013e3fcce"
+  },
+  {
+   "path": "references/maps/dotnet-default.md",
+   "sha256": "59a6537bda5adb5122b9d94c624c00666fbe935a9e5a76bae4c3f70acb97fefc"
+  },
+  {
+   "path": "references/maps/html.md",
+   "sha256": "03c0bf4da7184d9592fa285ed9d3d0a8f81debce4873c72c758b53b64e066d89"
+  },
+  {
+   "path": "references/proof.md",
+   "sha256": "ac2003eae84f1e8e787475d4600dd869c0aa0eda156138d5d22ad89599dafc5e"
+  },
+  {
+   "path": "references/restyle.md",
+   "sha256": "5f26902262bba8a367ca173ec5e91edb732f761cfa82d3d1b993e8278f8c90d1"
+  },
+  {
+   "path": "references/roles.md",
+   "sha256": "449eee503ae9161fdaf761a10285b7e5c7741b4d8d43104af280e2cc0766186e"
+  },
+  {
+   "path": "scripts/aui-class.mjs",
+   "sha256": "705a5ae2ba667acd6fc062d5d3f2f3bbf4219f617c172fee9d1fc9a7287f3554"
+  },
+  {
+   "path": "scripts/styled-evidence.mjs",
+   "sha256": "1772c6ba40b69ca97e9970ac0ae3ca6c60b5426b91211f155c0d7ea5817edfc2"
+  }
+ ]
+}

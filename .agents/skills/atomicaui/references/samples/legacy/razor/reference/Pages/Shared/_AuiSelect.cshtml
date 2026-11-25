@@ -1,0 +1,64 @@
+@* Generated from the AtomicAUI class recipes by the kit (scripts/samples-build.mjs). Copy it into your app; change what it is given, never a class list (AUI-09). *@
+@model LegacyRazor.Models.AuiSelect
+<div class="aui-field aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0 aui-gap-3" data-filled>
+  <label id="@(Model.Id)-label" for="@(Model.Id)-trigger" class="aui-field-label aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface" data-filled>@Model.Label</label>
+  <button type="button" id="@(Model.Id)-trigger" role="combobox" aria-expanded="false" aria-haspopup="listbox" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-select-trigger aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-fixed-surface aui-frame--inset aui-width-fill" data-filled aria-labelledby="@(Model.Id)-label" aria-controls="@(Model.Id)-list">
+    <span class="aui-select-value">@Model.Value</span>
+    <span aria-hidden="true" data-aui-rotate class="aui-select-chevron">
+      <span aria-hidden="true" class="aui-contained-icon aui-icon-lh-l3 aui-bg-transparent aui-min-width-0 aui-min-height-0 aui-padding-inline-start-0 aui-padding-inline-end-0 aui-padding-block-start-0 aui-padding-block-end-0 aui-gap-0">
+        <i aria-hidden="true" class="aui-icon aui-icon-size-fallback-14 fa-duotone fa-chevron-down" data-aui-icon-family="fa-7-pro" data-aui-icon-style="duotone">
+</i>
+      </span>
+    </span>
+  </button>
+<input type="hidden" name="@Model.Name" value="@Model.Value" id="@(Model.Id)">
+</div>
+<div data-side="bottom" data-align="center" role="presentation" data-aui-typeface="engineering" data-aui-typography="body" class="aui-select-positioner aui-display-none">
+<div data-side="bottom" data-align="center" tabindex="-1" role="presentation" class="aui-select-popup aui-frame aui-scale-block-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface aui-elevation-4" data-aui-popup-motion="anchored" style="--aui-width: var(--anchor-width)">
+  <div role="presentation">
+    <div role="presentation" tabindex="-1" class="aui-view-scroll-area-viewport">
+      <div id="@(Model.Id)-list" role="listbox" class="aui-select-list" data-aui-picked-class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-select-item aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-raised">
+@foreach (var option in Model.Options)
+{
+    if (option.Disabled)
+    {
+        <div data-disabled role="option" aria-disabled="true" aria-selected="false" tabindex="-1" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-select-item aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-disabled">
+                  <div class="aui-select-item-text">@option.Name</div>
+                  <span aria-hidden="true" class="aui-select-item-indicator aui-frame aui-part aui-bg-transparent aui-scale-no-padding-sm">
+                    <svg class="aui-select-item-glyph" viewBox="0 0 16 16" focusable="false" width="1em" height="1em">
+                      <path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        </path>
+                    </svg>
+                  </span>
+                </div>
+    }
+    else if (option.Name == Model.Value)
+    {
+        <div data-selected role="option" aria-selected="true" tabindex="-1" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-select-item aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-raised">
+                  <div class="aui-select-item-text">@option.Name</div>
+                  <span data-selected aria-hidden="true" class="aui-select-item-indicator aui-frame aui-part aui-bg-transparent aui-scale-no-padding-sm">
+                    <svg class="aui-select-item-glyph" viewBox="0 0 16 16" focusable="false" width="1em" height="1em">
+                      <path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        </path>
+                    </svg>
+                  </span>
+                </div>
+    }
+    else
+    {
+        <div role="option" aria-selected="false" tabindex="-1" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-select-item aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface">
+                  <div class="aui-select-item-text">@option.Name</div>
+                  <span aria-hidden="true" class="aui-select-item-indicator aui-frame aui-part aui-bg-transparent aui-scale-no-padding-sm">
+                    <svg class="aui-select-item-glyph" viewBox="0 0 16 16" focusable="false" width="1em" height="1em">
+                      <path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        </path>
+                    </svg>
+                  </span>
+                </div>
+    }
+}
+</div>
+    </div>
+  </div>
+</div>
+</div>

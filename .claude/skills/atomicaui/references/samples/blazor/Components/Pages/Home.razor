@@ -1,0 +1,38 @@
+@page "/"
+@* No prerender, on purpose. With prerender the server's elements are swapped for new ones a moment after the page loads:
+   a key pressed or an option picked before that is lost. Without it the parts appear once, when the connection is up. *@
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<PageTitle>Part P-1001</PageTitle>
+
+@* Every class list on this page is copied whole from a class recipe (standard/recipes/). The three parts are components in Components/Aui. *@
+<div class="aui-view aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-surface aui-elevation-0 aui-gap-16 aui-width-fill aui-display-flex aui-flex-direction-column">
+  <button type="button" data-aui-theme-toggle class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0">Light or dark</button>
+  <div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-width-256">
+    <AuiSelect Id="select-1" Label="State" Name="state" Options="States" @bind-Value="state" />
+  </div>
+  <div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-width-256">
+    <AuiDialog Id="dialog-1" Opener="Promote" Title="Promote Part" Description="Choose the next state." Fields="Fields" Actions="Actions" OnAction="Acted" />
+  </div>
+  <div class="aui-view aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-elevation-0 aui-width-256">
+    <AuiTabs Id="tabs-1" Tabs="Tabs" @bind-Selected="tab">
+      <Panel Context="index">@Tabs[index] content</Panel>
+    </AuiTabs>
+  </div>
+  <button type="button" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-button aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0">After</button>
+  @* What the server knows: it changes only after the browser has told it. *@
+  <span id="server-state" class="aui-frame aui-scale-no-padding-sm aui-bg-transparent" data-aui-typeface="engineering" data-aui-typography="body">State: @state. Tab: @Tabs[tab]. Last action: @(action ?? "none").</span>
+</div>
+
+@code {
+    private static readonly AuiOption[] States = [new("Preliminary"), new("In Review"), new("Released"), new("Superseded"), new("Obsolete", Disabled: true)];
+    private static readonly string[] Fields = ["Comment"];
+    private static readonly string[] Actions = ["Cancel", "Promote"];
+    private static readonly string[] Tabs = ["BOM", "Documents", "Changes"];
+
+    private string? state = "Released";
+    private int tab;
+    private string? action;
+
+    private void Acted(string name) => action = name;
+}

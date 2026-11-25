@@ -1,0 +1,4 @@
+[
+  { "name": "page", "url": "" },
+  { "name": "return-dialog", "url": "", "click": ["Return item"] }
+]

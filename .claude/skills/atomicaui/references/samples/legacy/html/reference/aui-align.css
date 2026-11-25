@@ -1,0 +1,11 @@
+/* aui-align.css: the third-party chart "TinyChart" takes AtomicAUI's theme values (kit/style/align.md). Every rule starts at [data-aui-aligned="tinychart"]. */
+/* why: the widget's own stylesheet sets Georgia and 13 px, and its settings cannot reach the font: it takes the theme's text style */
+[data-aui-aligned="tinychart"] { font-family: var(--typography-typeface-family); font-size: var(--typography-typescale-p3-font-size); line-height: var(--typography-typescale-p3-line-height); }
+/* why: the widget's own stylesheet draws its frame in a fixed grey with a 6 px corner; its settings cannot reach them */
+[data-aui-aligned="tinychart"] { border-color: var(--theme-outlined); border-radius: var(--p-px-4); }
+/* why: the axes are fixed greys in the widget's own stylesheet */
+[data-aui-aligned="tinychart"] .tc-grid { border-color: var(--theme-outlined); }
+/* why: the bars have a 3 px top corner in the widget's own stylesheet, which is no corner of the theme */
+[data-aui-aligned="tinychart"] .tc-bar { border-radius: var(--p-px-4) var(--p-px-4) 0 0; }
+/* why: the labels under the bars are a fixed grey in the widget's own stylesheet */
+[data-aui-aligned="tinychart"] .tc-label { color: var(--theme-muted); }

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Equipment loans</title>
+  <link rel="stylesheet" href="legacy.css">
+  <link rel="stylesheet" href="vendor/tinychart/tinychart.css">
+</head>
+<body>
+  <nav class="navbar">
+    <span class="navbar-brand">Loans desk</span>
+    <span class="navbar-text">Signed in as Ana Silva</span>
+    <button type="button" class="btn btn-default" id="sign-out">Sign out</button>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1 style="font-size: 22px">Equipment loans</h1>
+      <div class="btn-toolbar">
+        <button type="button" class="btn btn-primary" id="new-loan">New loan</button>
+        <button type="button" class="btn btn-danger" id="return-item" disabled>Return item</button>
+      </div>
+    </div>
+
+    <form class="form-inline well" id="search-form">
+      <div class="form-group">
+        <label for="q">Search</label>
+        <input id="q" name="q" type="text" class="form-control" placeholder="Item or borrower">
+      </div>
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select id="status" name="status" class="form-control">
+          <option value="All statuses">All statuses</option>
+          <option value="Open">Open</option>
+          <option value="Overdue">Overdue</option>
+          <option value="Returned">Returned</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-default">Search</button>
+    </form>
+
+    <div class="alert alert-warning" role="alert">Two loans are overdue.</div>
+
+    <table class="table table-striped" id="loans">
+      <thead>
+        <tr><th>Item</th><th>Borrower</th><th>Due</th><th>Status</th></tr>
+      </thead>
+      <tbody id="loan-rows"></tbody>
+    </table>
+    <p class="help-block" id="count"></p>
+
+    <h2 class="section-title">Loans per week</h2>
+    <div id="chart" class="tinychart"></div>
+  </div>
+
+  <div class="modal" id="return-dialog" role="dialog" aria-modal="true" aria-labelledby="return-title" style="display: none">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header"><h4 class="modal-title" id="return-title">Return this item?</h4></div>
+        <div class="modal-body"><p>The loan is closed and the item is back on the shelf.</p></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id="return-cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="return-confirm">Return</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/tinychart/tinychart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

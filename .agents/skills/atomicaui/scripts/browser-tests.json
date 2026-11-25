@@ -1,0 +1,21 @@
+{
+  "app": [
+    "scripts/nested-panes.test.mjs",
+    "scripts/pane-body-inset.test.mjs",
+    "scripts/panes-stack.test.mjs",
+    "scripts/planted-panes.test.mjs",
+    "scripts/table-selection.test.mjs",
+    "scripts/tree-filter-row.test.mjs"
+  ],
+  "kit": [
+    "scripts/browser.test.mjs",
+    "scripts/check-behaviour.test.mjs",
+    "scripts/check-standard.test.mjs",
+    "scripts/conformance-rules.test.mjs",
+    "scripts/evidence.test.mjs",
+    "scripts/measure-page.test.mjs",
+    "scripts/restyle-done.test.mjs",
+    "scripts/restyle.test.mjs",
+    "scripts/table-scroll.test.mjs"
+  ]
+}

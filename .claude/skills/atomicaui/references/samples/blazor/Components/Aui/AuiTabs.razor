@@ -1,0 +1,33 @@
+@* Generated from the AtomicAUI class recipes by the kit (scripts/samples-build.mjs). Copy it into your app; change what it is given, never a class list (AUI-09). *@
+<div data-orientation="horizontal" class="aui-tabs aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none">
+<div data-orientation="horizontal" role="tablist" @onauichange="Changed" class="aui-tabs-list aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0">
+@for (var index = 0; index < Tabs.Count; index++)
+{
+    <button type="button" data-active="@(index == Selected ? "" : null)" data-orientation="horizontal" aria-disabled="false" role="tab" aria-selected="@(index == Selected ? "true" : "false")" id="@(Id)-tab-@index" class="@(index == Selected ? "aui-stateful aui-focus-color-info aui-focus-width-2 aui-tabs-tab aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-overlay aui-elevation-0" : "aui-stateful aui-focus-color-info aui-focus-width-2 aui-tabs-tab aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0")" aria-controls="@(Id)-panel-@index" tabindex="@(index == Selected ? null : "-1")">@Tabs[index]</button>
+}
+</div>
+
+
+
+@for (var index = 0; index < Tabs.Count; index++)
+{
+    <div data-orientation="horizontal" id="@(Id)-panel-@index" role="tabpanel" tabindex="0" class="@(index == Selected ? "aui-tabs-panel aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface" : "aui-tabs-panel aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface aui-display-none")" aria-labelledby="@(Id)-tab-@index">
+      <span class="aui-frame aui-scale-no-padding-sm aui-bg-transparent" data-aui-typeface="engineering" data-aui-typography="body">@Panel(index)</span>
+    </div>
+}
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Id { get; set; } = "";
+    [Parameter] public IReadOnlyList<string> Tabs { get; set; } = [];
+    [Parameter] public int Selected { get; set; }
+    [Parameter] public EventCallback<int> SelectedChanged { get; set; }
+    /// <summary>The content of one panel, by tab number.</summary>
+    [Parameter] public RenderFragment<int> Panel { get; set; } = _ => _ => { };
+
+    private Task Changed(AuiChangeEventArgs change)
+    {
+        Selected = change.Index;
+        return SelectedChanged.InvokeAsync(change.Index);
+    }
+}

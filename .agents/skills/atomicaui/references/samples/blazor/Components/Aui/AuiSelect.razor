@@ -1,0 +1,51 @@
+@* Generated from the AtomicAUI class recipes by the kit (scripts/samples-build.mjs). Copy it into your app; change what it is given, never a class list (AUI-09). *@
+<div class="aui-field aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-text-surface aui-elevation-0 aui-gap-3" data-filled>
+  <label id="@(Id)-label" for="@(Id)-trigger" class="aui-field-label aui-frame aui-scale-no-padding-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface" data-filled>@Label</label>
+  <button type="button" id="@(Id)-trigger" role="combobox" @onauichange="Changed" aria-expanded="false" aria-haspopup="listbox" class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-select-trigger aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-fixed-surface aui-frame--inset aui-width-fill" data-filled aria-labelledby="@(Id)-label" aria-controls="@(Id)-list">
+    <span class="aui-select-value">@Value</span>
+    <span aria-hidden="true" data-aui-rotate class="aui-select-chevron">
+      <span aria-hidden="true" class="aui-contained-icon aui-icon-lh-l3 aui-bg-transparent aui-min-width-0 aui-min-height-0 aui-padding-inline-start-0 aui-padding-inline-end-0 aui-padding-block-start-0 aui-padding-block-end-0 aui-gap-0">
+        <i aria-hidden="true" class="aui-icon aui-icon-size-fallback-14 fa-duotone fa-chevron-down" data-aui-icon-family="fa-7-pro" data-aui-icon-style="duotone">
+</i>
+      </span>
+    </span>
+  </button>
+<input type="hidden" name="@Name" value="@Value" id="@(Id)">
+</div>
+<div data-side="bottom" data-align="center" role="presentation" data-aui-typeface="engineering" data-aui-typography="body" class="aui-select-positioner aui-display-none">
+<div data-side="bottom" data-align="center" tabindex="-1" role="presentation" class="aui-select-popup aui-frame aui-scale-block-padding-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface aui-elevation-4" data-aui-popup-motion="anchored" style="--aui-width: var(--anchor-width)">
+  <div role="presentation">
+    <div role="presentation" tabindex="-1" class="aui-view-scroll-area-viewport">
+      <div id="@(Id)-list" role="listbox" class="aui-select-list" data-aui-picked-class="aui-stateful aui-focus-color-info aui-focus-width-2 aui-select-item aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-raised">
+@foreach (var option in Options)
+{
+    <div data-disabled="@(option.Disabled ? "" : null)" role="option" aria-disabled="@(option.Disabled ? "true" : null)" aria-selected="@(option.Disabled ? "false" : option.Name == Value ? "true" : "false")" tabindex="-1" class="@(option.Disabled ? "aui-stateful aui-focus-color-info aui-focus-width-2 aui-select-item aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-disabled" : option.Name == Value ? "aui-stateful aui-focus-color-info aui-focus-width-2 aui-select-item aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-solid-raised" : "aui-stateful aui-focus-color-info aui-focus-width-2 aui-select-item aui-frame aui-scale-default-sm aui-typography-typescale-default aui-shape-none aui-color-text-surface")" data-selected="@(option.Disabled ? null : option.Name == Value ? "" : null)">
+      <div class="aui-select-item-text">@option.Name</div>
+      <span aria-hidden="true" class="aui-select-item-indicator aui-frame aui-part aui-bg-transparent aui-scale-no-padding-sm" data-selected="@(option.Disabled ? null : option.Name == Value ? "" : null)">
+        <svg class="aui-select-item-glyph" viewBox="0 0 16 16" focusable="false" width="1em" height="1em">
+          <path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </span>
+    </div>
+}
+</div>
+    </div>
+  </div>
+</div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Id { get; set; } = "";
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+    [Parameter] public string Name { get; set; } = "";
+    [Parameter] public IReadOnlyList<AuiOption> Options { get; set; } = [];
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    // The script has already redrawn the picked option in the browser; this keeps the component's value the same.
+    private Task Changed(AuiChangeEventArgs change)
+    {
+        Value = change.Value;
+        return ValueChanged.InvokeAsync(change.Value);
+    }
+}
