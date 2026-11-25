@@ -42,6 +42,7 @@ export const AUI = {
   linkSelected: `${STATEFUL} aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-secondary aui-elevation-0 aui-text-decoration-none`,
   buttonRaised: `${STATEFUL} aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-text-raised aui-elevation-0`,
   buttonRaisedSelected: `${STATEFUL} aui-scale-default-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-secondary aui-elevation-0`,
+  topButton: `${STATEFUL} aui-scale-square-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-raised aui-elevation-0`,
   iconButton: `${STATEFUL} aui-scale-square-sm aui-typography-typescale-default aui-shape-soft aui-color-solid-surface-alt aui-elevation-0`,
   iconWrap: 'aui-contained-icon aui-icon-lh-l3 aui-bg-transparent aui-min-width-0 aui-min-height-0 aui-padding-inline-start-0 aui-padding-inline-end-0 aui-padding-block-start-0 aui-padding-block-end-0 aui-gap-0 aui-shape-soft',
   icon: 'aui-icon aui-icon-size-fallback-14',

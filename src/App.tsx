@@ -118,11 +118,9 @@ export default function App() {
                 </a>
             </nav>
             <div className={AUI.topSpacer}></div>
-            <div className={AUI.topNav} role="group" aria-label="Status">
-                <span className={AUI.chipSuccess}><span className={AUI.chipLabel} {...ATTR}>IFC Engine Ready</span></span>
-                <span className={AUI.text} {...ATTR}>TRE Solver Connected</span>
-                <span className={AUI.text} {...ATTR}>2023-10-27 14:42:01</span>
-            </div>
+            <button type="button" aria-label="Toggle theme" data-aui-theme-toggle className={AUI.topButton}>
+                <AuiIcon name="moon" />
+            </button>
         </div>
 
         <div className={AUI.panes} data-aui-panes="page under-bar">
@@ -141,6 +139,11 @@ export default function App() {
                     selectedId={selectedGirderId}
                     onSelect={(id) => { setSelectedGirderId(id); setActiveTab('analyzer'); }}
                 />
+                <div className={AUI.row} role="group" aria-label="Status">
+                    <span className={AUI.chipSuccess}><span className={AUI.chipLabel} {...ATTR}>IFC Engine Ready</span></span>
+                    <span className={AUI.text} {...ATTR}>TRE Solver Connected</span>
+                    <span className={AUI.text} {...ATTR}>2023-10-27 14:42:01</span>
+                </div>
             </AuiPane>
 
             {/* Main content area */}
