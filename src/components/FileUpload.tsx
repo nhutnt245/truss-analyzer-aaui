@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { analyzeFiles, type LogCallback } from '../lib/parser';
 import { GirderGroup, LogEntry } from '../types';
+import { AUI, ATTR } from '../aui';
 import { getSSTToken, setSSTToken, clearSSTToken, hasSSTToken } from '../lib/sst-api';
 
 interface FileUploadProps {
@@ -87,43 +88,46 @@ export function FileUpload({ onAnalyze, onLog }: FileUploadProps) {
   }
 
   return (
-    <div className="flex flex-col p-3 gap-2 bg-[#D4D3D0] border-b border-[#141414]">
-        <div className="flex gap-2">
-            <button 
+    <div className={AUI.stack}>
+        <div className={AUI.row}>
+            <button
+                type="button"
                 onClick={() => ifcInputRef.current?.click()}
-                className="flex-1 px-2 py-1.5 border border-[#141414] bg-[#EDEDED] text-[10px] font-bold uppercase hover:bg-[#141414] hover:text-white transition-colors truncate"
+                className={AUI.button}
             >
                 {ifcFiles.length > 0 ? `${ifcFiles.length} IFC Loaded` : '+ Import IFC'}
             </button>
-            <input 
-                ref={ifcInputRef} 
-                type="file" 
-                multiple 
-                accept=".ifc" 
-                className="hidden" 
-                onChange={handleIfcChange} 
+            <input
+                ref={ifcInputRef}
+                type="file"
+                multiple
+                accept=".ifc"
+                hidden
+                onChange={handleIfcChange}
             />
 
-            <button 
+            <button
+                type="button"
                 onClick={() => treInputRef.current?.click()}
-                className="flex-1 px-2 py-1.5 border border-[#141414] bg-[#EDEDED] text-[10px] font-bold uppercase hover:bg-[#141414] hover:text-white transition-colors truncate"
+                className={AUI.button}
             >
                 {treFiles.length > 0 ? `${treFiles.length} TRE Loaded` : '+ Import TRE'}
             </button>
-            <input 
-                ref={treInputRef} 
-                type="file" 
-                multiple 
-                accept=".tre" 
-                className="hidden" 
-                onChange={handleTreChange} 
+            <input
+                ref={treInputRef}
+                type="file"
+                multiple
+                accept=".tre"
+                hidden
+                onChange={handleTreChange}
             />
         </div>
 
-        <button 
+        <button
+            type="button"
             onClick={handleAnalyze}
             disabled={isAnalyzing}
-            className="w-full px-4 py-2 bg-[#141414] text-white text-[11px] font-bold uppercase tracking-widest hover:bg-black transition-colors disabled:opacity-50"
+            className={isAnalyzing ? AUI.buttonDisabled : AUI.buttonMain}
         >
             {isAnalyzing ? 'Processing...' : 'Run Analysis Engine'}
         </button>
@@ -160,58 +164,51 @@ function SSTTokenSection() {
 
   if (saved && !editing) {
     return (
-      <div className="flex items-center justify-between bg-[#EDEDED] border border-[#141414]/30 rounded px-2 py-1.5">
-        <div className="flex items-center space-x-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-600"></span>
-          <span className="text-[9px] font-bold uppercase tracking-wider text-[#141414]">SST Token</span>
-        </div>
-        <div className="flex items-center space-x-1.5">
-          <span className="text-[9px] font-mono text-green-700">Connected</span>
-          <button
-            onClick={() => setEditing(true)}
-            className="text-[8px] font-bold uppercase text-zinc-500 hover:text-[#141414] transition-colors"
-          >
-            Edit
-          </button>
-          <button
-            onClick={handleClear}
-            className="text-[8px] font-bold uppercase text-red-500 hover:text-red-700 transition-colors"
-          >
-            Clear
-          </button>
-        </div>
+      <div className={AUI.row} role="group" aria-label="SST Token">
+        <span className={AUI.text} {...ATTR}>SST Token</span>
+        <span className={AUI.text} {...ATTR}>Connected</span>
+        <button type="button" onClick={() => setEditing(true)} className={AUI.buttonQuiet}>
+          Edit
+        </button>
+        <button type="button" onClick={handleClear} className={AUI.buttonQuiet}>
+          Clear
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#EDEDED] border border-[#141414]/30 rounded p-2 space-y-1.5">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-          <span className="text-[9px] font-bold uppercase tracking-wider text-[#141414]">SST Bearer Token</span>
-        </div>
+    <div className={AUI.stack}>
+      <div className={AUI.row}>
+        <span className={AUI.text} {...ATTR}>SST Bearer Token</span>
         {editing && (
           <button
+            type="button"
             onClick={() => { setEditing(false); setTokenValue(getSSTToken() ?? ''); }}
-            className="text-[8px] font-bold uppercase text-zinc-500 hover:text-[#141414]"
+            className={AUI.buttonQuiet}
           >
             Cancel
           </button>
         )}
       </div>
-      <input
-        type="password"
-        value={tokenValue}
-        onChange={(e) => setTokenValue(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSave()}
-        placeholder="Paste token from app.strongtie.com/hs DevTools..."
-        className="w-full bg-white border border-[#141414]/20 rounded px-2 py-1 text-[9px] font-mono text-[#141414] placeholder:text-zinc-400 focus:outline-none focus:border-[#141414]/60"
-      />
+      <div className={AUI.field}>
+        <div className={AUI.fieldControl}>
+          <input
+            type="password"
+            aria-label="SST Bearer Token"
+            value={tokenValue}
+            onChange={(e) => setTokenValue(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+            placeholder="Paste token from app.strongtie.com/hs DevTools..."
+            className={AUI.input}
+          />
+        </div>
+      </div>
       <button
+        type="button"
         onClick={handleSave}
         disabled={!tokenValue.trim()}
-        className="w-full px-2 py-1 bg-[#141414] text-white text-[9px] font-bold uppercase tracking-wider hover:bg-black transition-colors disabled:opacity-30 disabled:cursor-not-allowed rounded"
+        className={tokenValue.trim() ? AUI.buttonMain : AUI.buttonDisabled}
       >
         Save Token
       </button>

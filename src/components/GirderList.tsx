@@ -1,5 +1,6 @@
 import { GirderGroup } from "../types";
 import { AUI, ATTR } from "../aui";
+import { AuiTable } from "./AuiTable";
 
 interface GirderListProps {
     girders: GirderGroup[];
@@ -17,25 +18,28 @@ export function GirderList({ girders, selectedId, onSelect }: GirderListProps) {
     }
 
     return (
-        <div className={AUI.stack} role="list" aria-label="Girder Trusses">
-            {girders.map(group => {
+        <AuiTable
+            label="Girder Trusses"
+            columns={[
+                { header: 'Girder' },
+                { header: 'Status' },
+                { header: 'ID' },
+                { header: 'Connects' },
+            ]}
+            rows={girders.map(group => {
                 const isSelected = selectedId === group.girder.id;
-                return (
-                    <button
-                        key={group.girder.id}
-                        type="button"
-                        role="listitem"
-                        aria-current={isSelected ? 'true' : undefined}
-                        onClick={() => onSelect(group.girder.id)}
-                        className={isSelected ? AUI.buttonMain : AUI.button}
-                    >
-                        <span className={AUI.text} {...ATTR}>{group.girder.label}</span>
-                        <span className={AUI.text} {...ATTR}>{isSelected ? 'ACTIVE' : 'PRIMARY'}</span>
-                        <span className={AUI.text} {...ATTR}>{group.girder.id}</span>
-                        <span className={AUI.text} {...ATTR}>Connects: {group.carriedTrusses.length} | Load Path Confirmed</span>
-                    </button>
-                )
+                return {
+                    key: group.girder.id,
+                    selected: isSelected,
+                    onSelect: () => onSelect(group.girder.id),
+                    cells: [
+                        group.girder.label,
+                        isSelected ? 'ACTIVE' : 'PRIMARY',
+                        group.girder.id,
+                        `Connects: ${group.carriedTrusses.length} | Load Path Confirmed`,
+                    ],
+                };
             })}
-        </div>
+        />
     )
 }

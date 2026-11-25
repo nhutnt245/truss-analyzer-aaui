@@ -9,6 +9,7 @@ import { GirderGroup, LogEntry } from './types';
 import { analyzeFiles } from './lib/parser';
 import { AUI, ATTR } from './aui';
 import { AuiIcon } from './components/AuiIcon';
+import { AuiPane } from './components/AuiPane';
 import type { ParsedInventory } from './lib/inventory';
 import type { SSTHangerResult } from './lib/sst-types';
 
@@ -88,24 +89,24 @@ export default function App() {
   const resolvedCount = Object.keys(hangerResultsMap).length;
 
   return (
-    <div className={AUI.page} style={{ height: '100vh' }}>
+    <div className={AUI.page}>
         <div role="menubar" aria-orientation="horizontal" className={AUI.topBar}>
             <nav aria-label="Main" className={AUI.topNav}>
-                <button
-                    type="button"
+                <a
+                    href="#analyzer"
                     role="link"
                     aria-current={activeTab === 'analyzer' ? 'page' : undefined}
-                    onClick={() => setActiveTab('analyzer')}
-                    className={activeTab === 'analyzer' ? AUI.buttonRaisedSelected : AUI.buttonRaised}
+                    onClick={(e) => { e.preventDefault(); setActiveTab('analyzer'); }}
+                    className={AUI.link}
                 >
                     Analyzer
-                </button>
-                <button
-                    type="button"
+                </a>
+                <a
+                    href="#summary"
                     role="link"
                     aria-current={activeTab === 'summary' ? 'page' : undefined}
-                    onClick={() => setActiveTab('summary')}
-                    className={activeTab === 'summary' ? AUI.buttonRaisedSelected : AUI.buttonRaised}
+                    onClick={(e) => { e.preventDefault(); setActiveTab('summary'); }}
+                    className={AUI.link}
                 >
                     <AuiIcon name="file-spreadsheet" />
                     Job Summary
@@ -114,65 +115,52 @@ export default function App() {
                             <span className={AUI.chipLabel} {...ATTR}>{resolvedCount}</span>
                         </span>
                     )}
-                </button>
+                </a>
             </nav>
             <div className={AUI.topSpacer}></div>
+            <div className={AUI.topNav} role="group" aria-label="Status">
+                <span className={AUI.chipSuccess}><span className={AUI.chipLabel} {...ATTR}>IFC Engine Ready</span></span>
+                <span className={AUI.text} {...ATTR}>TRE Solver Connected</span>
+                <span className={AUI.text} {...ATTR}>2023-10-27 14:42:01</span>
+            </div>
         </div>
 
         <div className={AUI.panes} data-aui-panes="page under-bar">
             {/* Left sidebar: always visible */}
-            <div className={AUI.paneSide} data-aui-pane="girders">
-                <div className={AUI.paneHeader} data-aui-pane-header>
-                    <h2 className={AUI.paneTitle} {...ATTR}>Girder Trusses</h2>
-                    {girders.length > 0 && (
-                        <span className={AUI.text} {...ATTR}>[{String(girders.length).padStart(2, '0')} Units]</span>
-                    )}
-                </div>
-                <div className={AUI.paneScroll}>
-                    <div className={AUI.paneFill} data-aui-pane-body="fill">
-                        <FileUpload onAnalyze={handleAnalyze} onLog={handleLog} />
-                        <GirderList
-                            girders={girders}
-                            selectedId={selectedGirderId}
-                            onSelect={(id) => { setSelectedGirderId(id); setActiveTab('analyzer'); }}
-                        />
-                    </div>
-                </div>
-            </div>
+            <AuiPane
+                name="girders"
+                size="side"
+                title="Girder Trusses"
+                extra={girders.length > 0 && (
+                    <span className={AUI.text} {...ATTR}>[{String(girders.length).padStart(2, '0')} Units]</span>
+                )}
+            >
+                <FileUpload onAnalyze={handleAnalyze} onLog={handleLog} />
+                <GirderList
+                    girders={girders}
+                    selectedId={selectedGirderId}
+                    onSelect={(id) => { setSelectedGirderId(id); setActiveTab('analyzer'); }}
+                />
+            </AuiPane>
 
             {/* Main content area */}
-            <div className={AUI.pane} data-aui-pane="main">
-                <div className={AUI.paneHeader} data-aui-pane-header>
-                    <h2 className={AUI.paneTitle} {...ATTR}>{activeTab === 'analyzer' ? 'Analyzer' : 'Job Summary'}</h2>
-                </div>
-                <div className={AUI.paneScroll}>
-                    <div className={AUI.paneFill} data-aui-pane-body="fill">
-                        {activeTab === 'analyzer' && (
-                            <GirderDetails
-                                group={selectedGirder}
-                                inventory={inventory}
-                                onInventoryChange={setInventory}
-                                onHangersLoaded={handleHangersLoaded}
-                            />
-                        )}
-                        {activeTab === 'summary' && (
-                            <JobSummaryTable
-                                girders={girders}
-                                hangerResultsMap={hangerResultsMap}
-                                inventory={inventory}
-                                onInventoryChange={setInventory}
-                                onHangersLoaded={handleHangersLoaded}
-                            />
-                        )}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div className={AUI.toolbar} role="group" aria-label="Status">
-            <span className={AUI.chipSuccess}><span className={AUI.chipLabel} {...ATTR}>IFC Engine Ready</span></span>
-            <span className={AUI.text} {...ATTR}>TRE Solver Connected</span>
-            <span className={AUI.text} {...ATTR}>2023-10-27 14:42:01</span>
+            {activeTab === 'analyzer' && (
+                <GirderDetails
+                    group={selectedGirder}
+                    inventory={inventory}
+                    onInventoryChange={setInventory}
+                    onHangersLoaded={handleHangersLoaded}
+                />
+            )}
+            {activeTab === 'summary' && (
+                <JobSummaryTable
+                    girders={girders}
+                    hangerResultsMap={hangerResultsMap}
+                    inventory={inventory}
+                    onInventoryChange={setInventory}
+                    onHangersLoaded={handleHangersLoaded}
+                />
+            )}
         </div>
     </div>
   );
